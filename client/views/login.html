@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đăng nhập</title>
+    <link rel="stylesheet" href="../css/login.css">
+    <!-- Tailwind -->
+    <script src="https://cdn.tailwindcss.com"> </script>
+</head>
+
+<body class="login-body">
+    <div class="login-container">
+        <div class="login-box">
+
+            <!-- Image Section -->
+            <div class="img-section">
+                <img class="login-img" src="../img/img.svg" alt="Login Image">    
+            </div>
+
+            <!-- Login Section -->
+            <div class="login-form">
+              <div class="form-header">
+                <p class="welcome-text">Chào mừng trở lại!</p>
+                <form class="form-fields" action="" method="POST">
+                    <div class="input-group">
+                        <label for="email" class="label-text">Email</label>
+                        <input type="text" name="username" id="username" class="input-field" placeholder="abc@gmail.com" />                        
+                    </div>
+    
+                    <div class="input-group">
+                        <label for="password" class="label-text">Mật khẩu</label>
+                        <input type="password" name="password" id="password" class="input-field" placeholder="Mật khẩu của bạn" />                        
+                    </div>
+    
+                    <input type="submit" name="submit" value="Đăng nhập" id="login-button" class="login-button">
+                    <div><label id="error-message"></label></div>
+                
+                </form>
+               </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
