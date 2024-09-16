@@ -21,7 +21,7 @@ document.getElementById('loginForm').addEventListener('submit', async function(e
         const result = await response.json();
 
         if (response.ok) {
-            window.location.href = 'http://127.0.0.1:5500/Student_Management/client/views/home.html'; 
+            window.location.href = '../views/home.html'; 
         } else {
             document.getElementById('error-message').innerText = result.message || 'Login failed';
             document.getElementById('error-message').style.display = 'block';
