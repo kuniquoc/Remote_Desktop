@@ -36,7 +36,7 @@ document.getElementById('registerForm').addEventListener('submit', async functio
         }
     } catch (error) {
         console.error('Error:', error);
-        document.getElementById('error-message').innerText = 'Thông tin tài khoản không hợp lệ!';
+        document.getElementById('error-message').innerText = 'Đã có lỗi xảy ra, vui lòng thử lại sau!';
         document.getElementById('error-message').style.display = 'block';
     }
 });

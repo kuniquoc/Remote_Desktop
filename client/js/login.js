@@ -1,3 +1,11 @@
+// const path = require('path');
+// const { remote } = require('electron');
+
+// document.getElementById('register-link').addEventListener('click', () => {
+//   const win = remote.getCurrentWindow();
+//   win.loadFile(path.join(__dirname, 'register.html'));
+// });
+
 document.getElementById('loginForm').addEventListener('submit', async function(e) {
     e.preventDefault();
     
