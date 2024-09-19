@@ -4,21 +4,13 @@ document.getElementById('registerForm').addEventListener('submit', async functio
     const username = document.getElementById('username').value;
     const password = document.getElementById('password').value;
 
-    // if (password !== confirmPassword) {
-    //     document.getElementById('error-message').innerText = "Passwords do not match";
-    //     document.getElementById('error-message').style.display = 'block';
-    //     return;
-    // }
-
-    // Confirm password - Nhập mật khẩu lần 2
-
     const registerData = {
         username: username,
         password: password
     };
-    
+
     try {
-        const response = await fetch('/api/auth/signup', {
+        const response = await fetch('http://localhost:8080/api/auth/signup', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -26,12 +18,25 @@ document.getElementById('registerForm').addEventListener('submit', async functio
             body: JSON.stringify(registerData)
         });
 
-        const result = await response.json();
+        let result;
+        const contentType = response.headers.get("content-type");
+
+        if (contentType && contentType.includes("application/json")) {
+            result = await response.json();
+        } else {
+            result = await response.text();
+        }
 
         if (response.ok) {
-            window.location.href = '../views/home.html'; 
+            document.getElementById('success-message').innerText = 'Đăng ký thành công!';
+            document.getElementById('success-message').style.display = 'block';
+
+            // Delay 2s khi đăng ký thành công, rồi chuyển qua trang home.html
+            setTimeout(function() {
+                window.location.href = '../views/home.html'; 
+            }, 2000);
         } else {
-            document.getElementById('error-message').innerText = result.message || 'Registration failed';
+            document.getElementById('error-message').innerText = result.message || result || 'Đăng ký thất bại';
             document.getElementById('error-message').style.display = 'block';
         }
     } catch (error) {

@@ -63,6 +63,12 @@ button:hover {
     display: none;
 }
 
+.success-message {
+    color: lime;
+    text-align: center;
+    display: none;
+}
+
 p {
     text-align: center;
     color: #ECF9FB;
