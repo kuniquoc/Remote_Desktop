@@ -4,11 +4,29 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PBL4 - Home</title>
-
+    <link rel="stylesheet" href="../css/home.css">
+    <link rel="stylesheet" href="../css/header_lin.css">
 </head>
 <body>
-    <h1>Đây là trang chính</h1>
-    <button id="logout-btn">Đăng xuất</button>
+    <div class="container">
+        <header>
+            <h2 class="logo">PBL4</h2>
+            <nav class="navigation">
+                <a href="home.html">Home</a>
+                <a href="event_calendar.html">Lịch trình</a>
+                <a href="#">Nút C</a>
+                <a href="#">Nút D</a>
+                <button class="btnLogout-popup" onclick="logout()">Đăng xuất</button>
+            </nav>
+        </header>
+          
+
+        <div id="main-content">
+            <h2>Home</h2>
+            <p>Chào mừng đến trang home</p>
+        </div>
+
+    </div>
 
     <script src="../js/home.js"></script>
 </body>

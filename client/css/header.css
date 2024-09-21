@@ -7,23 +7,13 @@
     font-family: "Source Sans 3", sans-serif;
 }
 
-body {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    background: url('../img/index_background.png') no-repeat;
-    background-size: cover;
-    background-position: center;
-}
-
 header {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
-    padding: 20px 100px;
-    background: darkcyan;
+    padding: 20px 80px;
+    background: #4CAF50;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -64,9 +54,9 @@ header {
     transform: scaleX(1);
 }
 
-.index-login-button {
-    width: 130px;
-    height: 50px;
+.btnLogin-popup {
+    width: 120px;
+    height: 40px;
     background: transparent;
     border: 2px solid #fff;
     outline: none;
@@ -79,8 +69,18 @@ header {
     transition: .5s;
 }
 
-.index-login-button:hover {
+.btnLogin-popup:hover {
     background: #fff;
     color: #162938;
+}
+
+.background-image {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: url('../img/index_background.png') no-repeat;
+    background-size: cover;
+    background-position: center;
 }
 

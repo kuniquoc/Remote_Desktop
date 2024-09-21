@@ -1,0 +1,86 @@
+{
+  "events": [
+    {
+      "title": "Xử lý tín hiệu số",
+      "description": "Học môn xử lý tín hiệu số",
+      "location": "E105",
+      "courseCode": "XLTHS",
+      "startDateTime": "2024-09-23T12:30",
+      "endDateTime": "2024-09-23T14:30",
+      "eventType": "class",
+      "id": "b6e4"
+    },
+    {
+      "id": "5c2a",
+      "title": "Toán ứng dụng CNTT",
+      "description": "Học môn toán ứng dụng CNTT",
+      "location": "E207",
+      "courseCode": "TUDCNTT",
+      "startDateTime": "2024-09-24T14:30",
+      "endDateTime": "2024-09-24T17:30",
+      "eventType": "class",
+      "reminders": [
+        {
+          "method": "email",
+          "minutesBefore": "60"
+        }
+      ],
+      "recurrence": {
+        "frequency": "none",
+        "interval": "1",
+        "daysOfWeek": [
+          ""
+        ],
+        "endRecurrence": ""
+      }
+    },
+    {
+      "id": "e081",
+      "title": "test",
+      "description": "test2",
+      "location": "F101",
+      "courseCode": "TEST",
+      "startDateTime": "2024-09-29T12:30",
+      "endDateTime": "2024-09-29T15:30",
+      "eventType": "exam",
+      "reminders": [
+        {
+          "method": "email",
+          "minutesBefore": "60"
+        }
+      ],
+      "recurrence": {
+        "frequency": "none",
+        "interval": "1",
+        "daysOfWeek": [
+          ""
+        ],
+        "endRecurrence": ""
+      }
+    },
+    {
+      "id": "8803",
+      "title": "test2",
+      "description": "test2",
+      "location": "F102",
+      "courseCode": "TEST2",
+      "startDateTime": "2024-09-26T22:06",
+      "endDateTime": "2024-09-30T10:05",
+      "eventType": "assignment",
+      "reminders": [
+        {
+          "method": "email",
+          "minutesBefore": "60"
+        }
+      ],
+      "recurrence": {
+        "frequency": "none",
+        "interval": "1",
+        "daysOfWeek": [
+          ""
+        ],
+        "endRecurrence": ""
+      }
+    }
+  ]
+}

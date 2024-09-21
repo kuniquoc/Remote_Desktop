@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PBL4 - Lịch trình</title>
+    <link rel="stylesheet" href="../css/event_calendar.css">
+    <link rel="stylesheet" href="../css/header_lin.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h2 class="logo">PBL4</h2>
+            <nav class="navigation">
+                <a href="home.html">Home</a>
+                <a href="event_calendar.html">Lịch trình</a>
+                <a href="#">Nút C</a>
+                <a href="#">Nút D</a>
+                <button class="btnLogout-popup" onclick="logout()">Đăng xuất</button>
+            </nav>
+        </header>
+        
+        <!-- Filter Dropdown -->
+    <div id="filter-container">
+        <label for="eventTypeFilter">Lọc theo loại:</label>
+        <select id="eventTypeFilter">
+            <option value="all">Tất cả</option>
+            <option value="class">Buổi học</option>
+            <option value="exam">Kiểm tra</option>
+            <option value="assignment">Bài tập</option>
+            <option value="activity">Hoạt động khác</option>
+        </select>
+    </div>
+
+        <div id="event-list-container">
+            <h2>Lịch của bạn</h2>
+            <table id="event-table">
+                <thead>
+                    <tr>
+                        <th>Tiêu đề</th>
+                        <th>Thời gian bắt đầu</th>
+                        <th>Thời gian kết thúc</th>
+                        <th>Loại</th>
+                        <th>Địa điểm</th>
+                        <th>Hành động</th>
+                    </tr>
+                </thead>
+                <tbody id="event-list"></tbody>
+            </table>
+
+            <!-- New Event Button -->
+            <button id="add-event-btn" class="add-event-btn">Thêm lịch mới</button>
+        </div>
+
+        <!-- Overlay for Viewing/Editing/Adding Event -->
+        <div id="event-modal" class="modal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <h2 id="modal-title">Chi tiết về lịch</h2>
+                <form id="event-form">
+                    <label for="title">Tiêu đề:</label>
+                    <input type="text" id="title" required>
+
+                    <label for="description">Mô tả:</label>
+                    <textarea id="description"></textarea>
+
+                    <label for="location">Địa điểm:</label>
+                    <input type="text" id="location">
+
+                    <label for="courseCode">Mã môn học:</label>
+                    <input type="text" id="courseCode" required>
+
+                    <label for="startDateTime">Thời điểm bắt đầu:</label>
+                    <input type="datetime-local" id="startDateTime" required>
+
+                    <label for="endDateTime">Thời điểm kết thúc:</label>
+                    <input type="datetime-local" id="endDateTime" required>
+
+                    <label for="eventType">Loại:</label>
+                    <select id="eventType" required>
+                        <option value="class">Buổi học</option>
+                        <option value="exam">Kiểm tra</option>
+                        <option value="assignment">Bài tập</option>
+                        <option value="activity">Hoạt động</option>
+                    </select>
+
+                    <fieldset>
+                        <legend>Lặp lại</legend>
+                        <label for="interval">Mỗi:</label>
+                        <input type="number" id="interval" value="1">
+                        <select id="frequency">
+                            <option value="none">Không lặp</option>
+                            <option value="daily">Ngày</option>
+                            <option value="weekly">Tuần</option>
+                            <option value="monthly">Tháng</option>
+                        </select>
+
+                        <label for="daysOfWeek">Ngày trong tuần:</label>
+                        <input type="text" id="daysOfWeek" placeholder="VD: Thứ ba">
+
+                        <label for="endRecurrence">Kết thúc lặp lại vào:</label>
+                        <input type="datetime-local" id="endRecurrence">
+                    </fieldset>
+
+                    <label for="reminder">Nhắc nhở trước (phút):</label>
+                    <input type="number" id="reminder" value="60">
+
+                    <div id="success-message" class="success-message"></div>
+                    <button type="submit" id="save-btn" class="save-btn hidden">Lưu</button>
+                </form>
+            </div>
+        </div>
+
+
+    </div>
+
+    <script src="../js/event_calendar.js"></script>
+</body>
+</html>
