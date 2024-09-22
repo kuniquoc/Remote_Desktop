@@ -1,30 +1,38 @@
 package quochung.server.service;
 
 import java.util.Collection;
+import java.time.LocalDate;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import lombok.AllArgsConstructor;
 import quochung.server.model.User;
 
-@AllArgsConstructor
 public class UserDetailsImplement implements UserDetails {
     private Long id;
     private String username;
-    //private String email;
     private String password;
+    private String fullName;
+    private LocalDate birthday;
+    private String email;
+    private String phone;
+    private String gender;
+    private Collection<? extends GrantedAuthority> authorities;
 
-    public static UserDetailsImplement build(User user) {
-        return new UserDetailsImplement(
-                user.getId(),
-                user.getUsername(),
-                //user.getEmail(),
-                user.getPassword());
+    public UserDetailsImplement(User user) {
+        username = user.getUsername();
+        password = user.getPassword();
+        id = user.getId();
+        fullName = user.getFullName();
+        birthday = user.getBirthday();
+        email = user.getEmail();
+        phone = user.getPhone();
+        gender = user.getGender();
+        authorities = user.getAuthorities();
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+        return authorities;
     }
 
     @Override
@@ -41,9 +49,25 @@ public class UserDetailsImplement implements UserDetails {
         return id;
     }
 
-    // public String getEmail() {
-    //     return email;
-    // }
+    public String getFullName() {
+        return fullName;
+    }
+
+    public LocalDate getBirthday() {
+        return birthday;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public String getGender() {
+        return gender;
+    }
 
     @Override
     public boolean isAccountNonExpired() {

@@ -1,10 +1,14 @@
 package quochung.server.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import java.util.Collection;
+import java.time.LocalDate;
+
+import java.util.Set;
+import java.util.HashSet;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -22,5 +26,22 @@ public class User {
 
     private String username;
     private String password;
-    //private String email;
+    @Column(name = "full_name")
+    private String fullName = "";
+    private LocalDate birthday = LocalDate.of(1, 1, 1);
+    private String email = "";
+    private String phone = "";
+    private String gender = "";
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
+    private Set<Role> roles = new HashSet<>();
+
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        Set<GrantedAuthority> authorities = new HashSet<>();
+        for (Role role : roles) {
+            authorities.add(new SimpleGrantedAuthority(role.getName().toString()));
+        }
+        return authorities;
+    }
 }

@@ -10,15 +10,12 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.password.PasswordEncoder;
-
-import quochung.server.model.User;
-import quochung.server.payload.JwtRespone;
-import quochung.server.payload.SignInRequest;
-import quochung.server.payload.SignUpRequest;
-import quochung.server.repository.UserRepository;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import quochung.server.payload.auth.*;
+import quochung.server.service.AuthService;
 import quochung.server.service.UserDetailsImplement;
 import quochung.server.util.JwtUtils;
+
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -29,13 +26,10 @@ public class AuthController {
     private AuthenticationManager authenticationManager;
 
     @Autowired
-    private PasswordEncoder passwordEncoder;
-
-    @Autowired
     private JwtUtils jwtUtils;
 
     @Autowired
-    private UserRepository userRepository;
+    AuthService authService;
 
     @PostMapping("/signin")
     public ResponseEntity<?> authenticateUser(@RequestBody SignInRequest signInRequest) {
@@ -55,19 +49,16 @@ public class AuthController {
         }
     }
 
-    @PostMapping("signup")
+    @PostMapping("/signup")
     public ResponseEntity<?> registerUser(@RequestBody SignUpRequest signUpRequest) {
-        if (userRepository.existsByUsername(signUpRequest.getUsername())) {
-            return ResponseEntity.badRequest().body("Username is already taken");
+        try {
+            authService.signUp(signUpRequest);
+            return ResponseEntity.ok("User registered successfully");
+        } catch (UsernameNotFoundException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Error: " + e.getMessage());
         }
-
-        User user = new User();
-        user.setUsername(signUpRequest.getUsername());
-        user.setPassword(passwordEncoder.encode(signUpRequest.getPassword()));
-
-        userRepository.save(user);
-
-        return ResponseEntity.ok("User registered successfully");
     }
 
 }
