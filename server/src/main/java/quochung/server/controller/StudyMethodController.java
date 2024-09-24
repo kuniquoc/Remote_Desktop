@@ -29,6 +29,7 @@ public class StudyMethodController {
             Object data = studyMethodService.createStudyMethod(studyMethodDto);
             return ResponseEntity.status(201).body(new MessageDto(message, data));
         } catch (Exception e) {
+            System.out.println("Error: " + e);
             return ResponseEntity.status(500).body(new MessageDto("Internal Server Error"));
         }
     }
@@ -40,6 +41,7 @@ public class StudyMethodController {
             Object data = studyMethodService.getAllStudyMethods();
             return ResponseEntity.ok(new MessageDto(message, data));
         } catch (Exception e) {
+            System.out.println("Error: " + e);
             return ResponseEntity.status(500).body(new MessageDto("Internal Server Error"));
         }
     }
@@ -53,6 +55,7 @@ public class StudyMethodController {
         } catch (BadRequestException e) {
             return ResponseEntity.status(400).body(new MessageDto(e.getMessage()));
         } catch (Exception e) {
+            System.out.println("Error: " + e);
             return ResponseEntity.status(500).body(new MessageDto("Internal Server Error"));
         }
     }
@@ -66,6 +69,7 @@ public class StudyMethodController {
         } catch (BadRequestException e) {
             return ResponseEntity.status(404).body(new MessageDto(e.getMessage()));
         } catch (Exception e) {
+            System.out.println("Error: " + e);
             return ResponseEntity.status(500).body(new MessageDto("Internal Server Error"));
         }
     }
@@ -76,6 +80,7 @@ public class StudyMethodController {
             studyMethodService.deleteStudyMethod(id);
             return ResponseEntity.noContent().build();
         } catch (Exception e) {
+            System.out.println("Error: " + e);
             return ResponseEntity.status(500).body(new MessageDto("Internal Server Error"));
         }
     }

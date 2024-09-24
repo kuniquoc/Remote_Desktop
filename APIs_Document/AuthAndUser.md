@@ -36,9 +36,17 @@
 **Response Body (JSON):**
 ```json
 {
-    "message": "Login successful",
+    "message": "Đăng nhập thành công",
     "data": {
-        "token": "your_access_token"
+        "token": "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTcyNzE5MTQ3MiwiZXhwIjoxNzI3Mjc3ODcyfQ.HzPRUi2YJm-7EthMo4KTHlUOeNmGocfTE2KEzNsPwVgYB5VesV0gP3KOHn2zHdp-",
+        "roles": [
+            {
+                "authority": "ROLE_USER"
+            },
+            {
+                "authority": "ROLE_ADMIN"
+            }
+        ]
     }
 }
 ```
@@ -52,7 +60,7 @@
 
 ### Get User Information (Authenticated)
 **Method:** GET  
-**URL:** /api/user  
+**URL:** /api/user/profile 
 **Response Body (JSON):**
 ```json
 {

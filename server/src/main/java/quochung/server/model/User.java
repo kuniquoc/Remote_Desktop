@@ -28,7 +28,7 @@ public class User {
     private String password;
     @Column(name = "full_name")
     private String fullName = "";
-    private LocalDate birthday = LocalDate.of(1, 1, 1);
+    private LocalDate birthday = LocalDate.now();
     private String email = "";
     private String phone = "";
     private String gender = "";

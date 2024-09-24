@@ -11,6 +11,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import quochung.server.model.Role;
 import quochung.server.model.User;
+import quochung.server.payload.auth.JwtDto;
 import quochung.server.payload.auth.SignInDto;
 import quochung.server.payload.auth.SignUpDto;
 import quochung.server.repository.UserRepository;
@@ -50,13 +51,14 @@ public class AuthService {
         userRepository.save(user);
     }
 
-    public String signIn(SignInDto signInRequest) {
+    public JwtDto signIn(SignInDto signInRequest) {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(signInRequest.getUsername(),
                         signInRequest.getPassword()));
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        return jwtUtils.generateToken((UserDetailsImplement) authentication.getPrincipal());
+        return new JwtDto(jwtUtils.generateToken((UserDetailsImplement) authentication.getPrincipal()),
+                ((UserDetailsImplement) authentication.getPrincipal()).getAuthorities());
     }
 }

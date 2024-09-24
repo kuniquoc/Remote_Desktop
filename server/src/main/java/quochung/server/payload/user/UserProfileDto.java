@@ -24,5 +24,6 @@ public class UserProfileDto {
         this.birthday = birthday;
         this.email = email;
         this.phone = phone;
+        this.gender = gender;
     }
 }

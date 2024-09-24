@@ -3,7 +3,6 @@ package quochung.server.service;
 import java.util.Set;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -28,23 +27,23 @@ public class UserDetailsServiceImplement implements UserDetailsService {
     @Autowired
     private RoleRepository roleRepository;
 
-    private Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new UsernameNotFoundException("Không tìm thấy người dùng với tên đăng nhập: " + username));
+                .orElseThrow(() -> new UsernameNotFoundException(
+                        "Không tìm thấy người dùng với tên đăng nhập: " + username));
 
         return new UserDetailsImplement(user);
     }
 
     public Long getCurrentUserId() {
-        return ((UserDetailsImplement) authentication.getPrincipal()).getId();
+        return ((UserDetailsImplement) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getId();
     }
 
     public User getCurrentUser() {
         return userRepository.findById(getCurrentUserId())
-                .orElseThrow(() -> new UsernameNotFoundException("Không tìm thấy người dùng với id: " + getCurrentUserId()));
+                .orElseThrow(
+                        () -> new UsernameNotFoundException("Không tìm thấy người dùng với id: " + getCurrentUserId()));
     }
 
     public UserProfileDto getUserProfile() {
@@ -75,7 +74,8 @@ public class UserDetailsServiceImplement implements UserDetailsService {
 
     public List<UserListElementDto> getAllUsers() {
         List<UserListElementDto> userList = userRepository.findAll().stream()
-                .map(user -> new UserListElementDto(user.getId(), user.getRoles(), user.getFullName(), user.getGender()))
+                .map(user -> new UserListElementDto(user.getId(), user.getRoles(), user.getFullName(),
+                        user.getGender()))
                 .toList();
         return userList;
     }

@@ -29,6 +29,7 @@ public class FavoriteController {
         } catch (BadRequestException e) {
             return ResponseEntity.status(404).body(new MessageDto(e.getMessage()));
         } catch (Exception e) {
+            System.out.println("Error: " + e);
             return ResponseEntity.status(500).body(new MessageDto("Lỗi server"));
         }
     }
@@ -42,6 +43,7 @@ public class FavoriteController {
         } catch (BadRequestException e) {
             return ResponseEntity.status(404).body(new MessageDto(e.getMessage()));
         } catch (Exception e) {
+            System.out.println("Error: " + e);
             return ResponseEntity.status(500).body(new MessageDto("Lỗi server"));
         }
     }
@@ -53,6 +55,7 @@ public class FavoriteController {
             Object data = favoriteService.getFavoritesByUserId(userId);
             return ResponseEntity.ok(new MessageDto(message, data));
         } catch (Exception e) {
+            System.out.println("Error: " + e);
             return ResponseEntity.status(500).body(new MessageDto("Lỗi server"));
         }
     }

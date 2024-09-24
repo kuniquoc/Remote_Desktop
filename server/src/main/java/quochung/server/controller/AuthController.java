@@ -5,7 +5,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
@@ -38,8 +37,7 @@ public class AuthController {
     @PostMapping("/signin")
     public ResponseEntity<?> signIn(@RequestBody SignInDto signInRequest) {
         try {
-            String token = authService.signIn(signInRequest);
-            return ResponseEntity.ok(new MessageDto("Đăng nhập thành công", new JwtDto(token)));
+            return ResponseEntity.ok(new MessageDto("Đăng nhập thành công", authService.signIn(signInRequest)));
 
         } catch (AuthenticationException e) {
             return ResponseEntity.status(404).body(new MessageDto("Không tìm thấy người dùng"));
