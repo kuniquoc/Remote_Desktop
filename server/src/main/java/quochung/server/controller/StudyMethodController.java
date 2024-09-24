@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
-import quochung.server.model.StudyMethod;
 import quochung.server.payload.MessageDto;
 import quochung.server.payload.studymethod.StudyMethodDto;
 import quochung.server.service.StudyMethodService;
