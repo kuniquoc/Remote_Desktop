@@ -33,7 +33,7 @@ public class UserDetailsServiceImplement implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new UsernameNotFoundException("User Not Found with username: " + username));
+                .orElseThrow(() -> new UsernameNotFoundException("Không tìm thấy người dùng với tên đăng nhập: " + username));
 
         return new UserDetailsImplement(user);
     }
@@ -44,7 +44,7 @@ public class UserDetailsServiceImplement implements UserDetailsService {
 
     public User getCurrentUser() {
         return userRepository.findById(getCurrentUserId())
-                .orElseThrow(() -> new UsernameNotFoundException("User Not Found with id: " + getCurrentUserId()));
+                .orElseThrow(() -> new UsernameNotFoundException("Không tìm thấy người dùng với id: " + getCurrentUserId()));
     }
 
     public UserProfileDto getUserProfile() {
@@ -82,14 +82,14 @@ public class UserDetailsServiceImplement implements UserDetailsService {
 
     public UserDetailDto getUserById(Long userId) {
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new UsernameNotFoundException("User Not Found with id: " + userId));
+                .orElseThrow(() -> new UsernameNotFoundException("Không tìm thấy người dùng với id: " + userId));
         return new UserDetailDto(user.getId(), user.getRoles(), user.getFullName(), user.getBirthday(),
                 user.getEmail(), user.getPhone(), user.getGender());
     }
 
     public void updatePassword(Long userId, String newPassword) {
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new UsernameNotFoundException("User Not Found with id: " + userId));
+                .orElseThrow(() -> new UsernameNotFoundException("Không tìm thấy người dùng với id: " + userId));
         user.setPassword(new BCryptPasswordEncoder().encode(newPassword));
         userRepository.save(user);
     }
@@ -100,7 +100,7 @@ public class UserDetailsServiceImplement implements UserDetailsService {
 
     public void updateRole(Long userId, Set<Role> roles) {
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new UsernameNotFoundException("User Not Found with id: " + userId));
+                .orElseThrow(() -> new UsernameNotFoundException("Không tìm thấy người dùng với id: " + userId));
         user.setRoles(roles);
         userRepository.save(user);
     }

@@ -29,12 +29,13 @@ public class StudyMethodService {
     }
 
     public StudyMethod getStudyMethodById(Long id) throws BadRequestException {
-        return studyMethodRepository.findById(id).orElseThrow(() -> new BadRequestException("Study method not found"));
+        return studyMethodRepository.findById(id)
+                .orElseThrow(() -> new BadRequestException("Phương pháp học không tồn tại"));
     }
 
     public StudyMethod updateStudyMethod(Long id, StudyMethodDto studyMethodDto) throws BadRequestException {
         StudyMethod studyMethod = studyMethodRepository.findById(id)
-                .orElseThrow(() -> new BadRequestException("Study method not found"));
+                .orElseThrow(() -> new BadRequestException("Phương pháp học không tồn tại"));
         studyMethod.setName(studyMethodDto.getName());
         studyMethod.setType(studyMethodDto.getType());
         studyMethod.setThumbnail(studyMethodDto.getThumbnail());

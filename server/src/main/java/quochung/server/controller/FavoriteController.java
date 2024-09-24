@@ -24,11 +24,12 @@ public class FavoriteController {
             @RequestParam("studyMethodId") Long studyMethodId) {
         try {
             favoriteService.addFavorite(userId, studyMethodId);
-            return ResponseEntity.status(201).body(new MessageDto("Favorite added successfully"));
+            return ResponseEntity.status(201)
+                    .body(new MessageDto("Thêm phương pháp học vào danh sách yêu thích thành công"));
         } catch (BadRequestException e) {
             return ResponseEntity.status(404).body(new MessageDto(e.getMessage()));
         } catch (Exception e) {
-            return ResponseEntity.status(500).body(new MessageDto("Internal server error"));
+            return ResponseEntity.status(500).body(new MessageDto("Lỗi server"));
         }
     }
 
@@ -41,18 +42,18 @@ public class FavoriteController {
         } catch (BadRequestException e) {
             return ResponseEntity.status(404).body(new MessageDto(e.getMessage()));
         } catch (Exception e) {
-            return ResponseEntity.status(500).body(new MessageDto("Internal server error"));
+            return ResponseEntity.status(500).body(new MessageDto("Lỗi server"));
         }
     }
 
     @GetMapping("/{userId}")
     public ResponseEntity<?> getFavoritesByUserId(@RequestParam("userId") Long userId) {
         try {
-            String message = "User's favorite study methods retrieved successfully";
+            String message = "Lấy danh sách phương pháp học yêu thích thành công";
             Object data = favoriteService.getFavoritesByUserId(userId);
             return ResponseEntity.ok(new MessageDto(message, data));
         } catch (Exception e) {
-            return ResponseEntity.status(500).body(new MessageDto("Internal server error"));
+            return ResponseEntity.status(500).body(new MessageDto("Lỗi server"));
         }
     }
 }

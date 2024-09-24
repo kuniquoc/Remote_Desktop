@@ -35,7 +35,7 @@ public class AuthService {
 
     public void signUp(SignUpDto signUpRequest) {
         if (userRepository.existsByUsername(signUpRequest.getUsername())) {
-            throw new UsernameNotFoundException("Username is already taken");
+            throw new UsernameNotFoundException("Tên người dùng đã tồn tại");
         }
 
         User user = new User();

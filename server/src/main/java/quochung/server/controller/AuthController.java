@@ -26,12 +26,12 @@ public class AuthController {
     public ResponseEntity<?> signUp(@RequestBody SignUpDto signUpRequest) {
         try {
             authService.signUp(signUpRequest);
-            return ResponseEntity.status(201).body(new MessageDto("User registered successfully"));
+            return ResponseEntity.status(201).body(new MessageDto("Đăng ký người dùng thành công"));
         } catch (UsernameNotFoundException e) {
-            return ResponseEntity.status(409).body(new MessageDto("Username already exists"));
+            return ResponseEntity.status(409).body(new MessageDto("Tên người dùng đã tồn tại"));
         } catch (Exception e) {
             System.out.println(e.getMessage());
-            return ResponseEntity.status(500).body(new MessageDto("Internal Server Error"));
+            return ResponseEntity.status(500).body(new MessageDto("Lỗi server"));
         }
     }
 
@@ -39,13 +39,13 @@ public class AuthController {
     public ResponseEntity<?> signIn(@RequestBody SignInDto signInRequest) {
         try {
             String token = authService.signIn(signInRequest);
-            return ResponseEntity.ok(new MessageDto("Login Successful", new JwtDto(token)));
+            return ResponseEntity.ok(new MessageDto("Đăng nhập thành công", new JwtDto(token)));
 
         } catch (AuthenticationException e) {
-            return ResponseEntity.status(404).body(new MessageDto("User not found"));
+            return ResponseEntity.status(404).body(new MessageDto("Không tìm thấy người dùng"));
         } catch (Exception e) {
             System.out.println(e.getMessage());
-            return ResponseEntity.status(500).body(new MessageDto("Internal Server Error"));
+            return ResponseEntity.status(500).body(new MessageDto("Lỗi server"));
         }
     }
 }

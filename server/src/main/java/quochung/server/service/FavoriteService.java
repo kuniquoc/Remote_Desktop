@@ -27,17 +27,18 @@ public class FavoriteService {
 
     public void addFavorite(Long userId, Long studyMethodId) throws BadRequestException {
         Favorite favorite = new Favorite();
-        User user = userRepository.findById(userId).orElseThrow(() -> new BadRequestException("User not found"));
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new BadRequestException("Không tìm thấy người dùng"));
         favorite.setUser(user);
         StudyMethod studyMethod = studyMethodRepository.findById(studyMethodId)
-                .orElseThrow(() -> new BadRequestException("Study method not found"));
+                .orElseThrow(() -> new BadRequestException("Không tìm thấy phương pháp học"));
         favorite.setStudyMethod(studyMethod);
         favoriteRepository.save(favorite);
     }
 
     public void removeFavorite(Long userId, Long studyMethodId) throws BadRequestException {
         Favorite favorite = favoriteRepository.findByUserIdAndStudyMethodId(userId, studyMethodId)
-                .orElseThrow(() -> new BadRequestException("Favorite not found"));
+                .orElseThrow(() -> new BadRequestException("Không tìm thấy phương pháp học trong danh sách yêu thích"));
         favoriteRepository.delete(favorite);
     }
 
