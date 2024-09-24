@@ -1,12 +1,12 @@
-// Check if the user is logged in by checking the token
-const token = localStorage.getItem('token');
-
-if (!token) {
-    // Redirect to login page if token is not found
-    window.location.href = '../views/login.html';
-}
-
 document.addEventListener('DOMContentLoaded', function() {
+    // Check if the user is logged in by checking the token
+    const token = localStorage.getItem('token');
+
+    if (!token) {
+        // Redirect to login page if token is not found
+        window.location.href = '../views/login.html';
+    }
+    
     const eventList = document.getElementById('event-list');
     const modal = document.getElementById('event-modal');
     const closeModal = document.querySelector('.close');

@@ -36,9 +36,17 @@ document.getElementById('registerForm').addEventListener('submit', async functio
                 window.location.href = '../views/home.html'; 
             }, 2000);
         } else {
-            document.getElementById('error-message').innerText = result.message || result || 'Đăng ký thất bại';
-            document.getElementById('error-message').style.display = 'block';
-        }
+            if (response.status === 409) {
+                document.getElementById('error-message').innerText = 'Tên người dùng đã tồn tại.';
+                document.getElementById('error-message').style.display = 'block';
+            } else if (response.status === 500) {
+                document.getElementById('error-message').innerText = 'Lỗi Server, vui lòng thử lại sau.';
+                document.getElementById('error-message').style.display = 'block';
+            } else {
+                document.getElementById('error-message').innerText = 'Đã có lỗi xảy ra.';
+                document.getElementById('error-message').style.display = 'block';
+            }
+            }
     } catch (error) {
         console.error('Error:', error);
         document.getElementById('error-message').innerText = 'Đã có lỗi xảy ra, vui lòng thử lại sau!';

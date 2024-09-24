@@ -33,9 +33,17 @@ document.getElementById('loginForm').addEventListener('submit', async function(e
 
             window.location.href = '../views/home.html'; 
         } else {
-            document.getElementById('error-message').innerText = result.message || result || 'Đăng nhập thất bại!';
-            document.getElementById('error-message').style.display = 'block';
-        }
+            if (response.status === 404) {
+                document.getElementById('error-message').innerText = 'Thông tin đăng nhập không hợp lệ!';
+                document.getElementById('error-message').style.display = 'block';
+            } else if (response.status === 401) {
+                document.getElementById('error-message').innerText = 'Thông tin không hợp lệ.';
+                document.getElementById('error-message').style.display = 'block';
+            } else {
+                document.getElementById('error-message').innerText = 'Đã có lỗi xảy ra.';
+                document.getElementById('error-message').style.display = 'block';
+            }
+            }
     } catch (error) {
         console.error('Error:', error);
         document.getElementById('error-message').innerText = 'Không thể kết nối đến server!';
