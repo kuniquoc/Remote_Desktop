@@ -19,7 +19,8 @@ public class StudyMethodService {
     public StudyMethod createStudyMethod(StudyMethodDto studyMethodDto) {
         StudyMethod studyMethod = new StudyMethod();
         studyMethod.setName(studyMethodDto.getName());
-        studyMethod.setDescription(studyMethodDto.getDescription());
+        studyMethod.setType(studyMethodDto.getType());
+        studyMethod.setThumbnail(studyMethodDto.getThumbnail());
         return studyMethodRepository.save(studyMethod);
     }
 
@@ -35,7 +36,8 @@ public class StudyMethodService {
         StudyMethod studyMethod = studyMethodRepository.findById(id)
                 .orElseThrow(() -> new BadRequestException("Study method not found"));
         studyMethod.setName(studyMethodDto.getName());
-        studyMethod.setDescription(studyMethodDto.getDescription());
+        studyMethod.setType(studyMethodDto.getType());
+        studyMethod.setThumbnail(studyMethodDto.getThumbnail());
         return studyMethodRepository.save(studyMethod);
     }
 

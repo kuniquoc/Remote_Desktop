@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import quochung.server.model.StudyMethodType;
 
 @Data
 @AllArgsConstructor
@@ -11,10 +12,12 @@ import lombok.Data;
 public class StudyMethodDto {
     private Long id;
     private String name;
-    private String description;
+    private StudyMethodType type;
+    private String thumbnail;
 
-    public StudyMethodDto(String name, String description) {
+    public StudyMethodDto(String name, StudyMethodType type, String thumbnail) {
         this.name = name;
-        this.description = description;
+        this.type = type;
+        this.thumbnail = thumbnail;
     }
 }

@@ -25,14 +25,14 @@ public class FavoriteService {
 
     private StudyMethodRepository studyMethodRepository;
 
-    public Favorite addFavorite(Long userId, Long studyMethodId) throws BadRequestException {
+    public void addFavorite(Long userId, Long studyMethodId) throws BadRequestException {
         Favorite favorite = new Favorite();
         User user = userRepository.findById(userId).orElseThrow(() -> new BadRequestException("User not found"));
         favorite.setUser(user);
         StudyMethod studyMethod = studyMethodRepository.findById(studyMethodId)
                 .orElseThrow(() -> new BadRequestException("Study method not found"));
         favorite.setStudyMethod(studyMethod);
-        return favoriteRepository.save(favorite);
+        favoriteRepository.save(favorite);
     }
 
     public void removeFavorite(Long userId, Long studyMethodId) throws BadRequestException {
@@ -41,7 +41,10 @@ public class FavoriteService {
         favoriteRepository.delete(favorite);
     }
 
-    public List<Favorite> getFavoritesByUserId(Long userId) {
-        return favoriteRepository.findByUserId(userId);
+    public List<StudyMethod> getFavoritesByUserId(Long userId) {
+        List<StudyMethod> studyMethods = favoriteRepository.findByUserId(userId).stream().map(favStudyMethod -> {
+            return favStudyMethod.getStudyMethod();
+        }).toList();
+        return studyMethods;
     }
 }

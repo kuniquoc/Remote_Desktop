@@ -21,5 +21,9 @@ public class StudyMethod {
 
     private String name;
 
+    private StudyMethodType type;
+
+    private String thumbnail;
+
     private String description;
 }
