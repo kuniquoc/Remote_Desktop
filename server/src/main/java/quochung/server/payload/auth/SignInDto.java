@@ -5,6 +5,7 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class JwtRespone {
-    private String token;
+public class SignInDto {
+    private String username;
+    private String password;
 }

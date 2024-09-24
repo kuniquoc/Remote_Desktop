@@ -13,9 +13,10 @@ import org.springframework.stereotype.Service;
 
 import quochung.server.model.User;
 import quochung.server.model.Role;
-import quochung.server.payload.user.UserProfile;
-import quochung.server.payload.user.UserDetailForAdmin;
-import quochung.server.payload.user.UserListElement;
+import quochung.server.payload.user.UserProfileDto;
+import quochung.server.payload.user.UserDetailDto;
+import quochung.server.payload.user.UserListElementDto;
+import quochung.server.repository.RoleRepository;
 import quochung.server.repository.UserRepository;
 
 @Service
@@ -23,6 +24,9 @@ public class UserDetailsServiceImplement implements UserDetailsService {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private RoleRepository roleRepository;
 
     private Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
@@ -43,13 +47,13 @@ public class UserDetailsServiceImplement implements UserDetailsService {
                 .orElseThrow(() -> new UsernameNotFoundException("User Not Found with id: " + getCurrentUserId()));
     }
 
-    public UserProfile getUserProfile() {
+    public UserProfileDto getUserProfile() {
         User user = getCurrentUser();
-        return new UserProfile(user.getFullName(), user.getBirthday(), user.getEmail(), user.getPhone(),
+        return new UserProfileDto(user.getFullName(), user.getBirthday(), user.getEmail(), user.getPhone(),
                 user.getGender());
     }
 
-    public void updateUserProfile(UserProfile userProfile) {
+    public void updateUserProfile(UserProfileDto userProfile) {
         User user = getCurrentUser();
         user.setFullName(userProfile.getFullName());
         user.setBirthday(userProfile.getBirthday());
@@ -69,17 +73,17 @@ public class UserDetailsServiceImplement implements UserDetailsService {
         userRepository.deleteById(getCurrentUserId());
     }
 
-    public List<UserListElement> getAllUsers() {
-        List<UserListElement> userList = userRepository.findAll().stream()
-                .map(user -> new UserListElement(user.getId(), user.getRoles(), user.getFullName(), user.getGender()))
+    public List<UserListElementDto> getAllUsers() {
+        List<UserListElementDto> userList = userRepository.findAll().stream()
+                .map(user -> new UserListElementDto(user.getId(), user.getRoles(), user.getFullName(), user.getGender()))
                 .toList();
         return userList;
     }
 
-    public UserDetailForAdmin getUserById(Long userId) {
+    public UserDetailDto getUserById(Long userId) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new UsernameNotFoundException("User Not Found with id: " + userId));
-        return new UserDetailForAdmin(user.getId(), user.getRoles(), user.getFullName(), user.getBirthday(),
+        return new UserDetailDto(user.getId(), user.getRoles(), user.getFullName(), user.getBirthday(),
                 user.getEmail(), user.getPhone(), user.getGender());
     }
 
@@ -99,5 +103,9 @@ public class UserDetailsServiceImplement implements UserDetailsService {
                 .orElseThrow(() -> new UsernameNotFoundException("User Not Found with id: " + userId));
         user.setRoles(roles);
         userRepository.save(user);
+    }
+
+    public List<Role> getAllRoles() {
+        return roleRepository.findAll();
     }
 }

@@ -7,6 +7,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
+
+import quochung.server.payload.MessageDto;
 import quochung.server.payload.user.*;
 import quochung.server.service.UserDetailsServiceImplement;
 
@@ -21,28 +23,25 @@ public class UserController {
     @GetMapping("/user")
     public ResponseEntity<?> getUserProfile() {
         try {
-            return ResponseEntity.ok(userDetailsServiceImplement.getUserProfile());
+            return ResponseEntity.ok(new MessageDto("User information retrieved successfully",
+                    userDetailsServiceImplement.getUserProfile()));
         } catch (UsernameNotFoundException e) {
-            System.out.println(e.getMessage());
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.status(404).body(new MessageDto("User not found"));
         } catch (Exception e) {
-            System.out.println(e.getMessage());
-            return ResponseEntity.badRequest().body("Get user profile failed");
+            return ResponseEntity.status(500).body(new MessageDto("Internal Server Error"));
         }
     }
 
     @PreAuthorize("hasRole('USER')")
     @PutMapping("/user/profile")
-    public ResponseEntity<?> updateUserProfile(@RequestBody UserProfile userProfile) {
+    public ResponseEntity<?> updateUserProfile(@RequestBody UserProfileDto userProfile) {
         try {
             userDetailsServiceImplement.updateUserProfile(userProfile);
-            return ResponseEntity.ok("User profile updated successfully");
+            return ResponseEntity.ok(new MessageDto("User profile updated successfully"));
         } catch (UsernameNotFoundException e) {
-            System.out.println(e.getMessage());
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.status(404).body(new MessageDto("User not found"));
         } catch (Exception e) {
-            System.out.println(e.getMessage());
-            return ResponseEntity.badRequest().body("User profile update failed");
+            return ResponseEntity.status(500).body(new MessageDto("Internal Server Error"));
         }
     }
 
@@ -51,13 +50,11 @@ public class UserController {
     public ResponseEntity<?> updateUserPassword(@RequestBody String newPassword) {
         try {
             userDetailsServiceImplement.updatePassword(newPassword);
-            return ResponseEntity.ok("User password updated successfully");
+            return ResponseEntity.ok(new MessageDto("User password updated successfully"));
         } catch (UsernameNotFoundException e) {
-            System.out.println(e.getMessage());
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.status(404).body(new MessageDto("User not found"));
         } catch (Exception e) {
-            System.out.println(e.getMessage());
-            return ResponseEntity.badRequest().body("User password update failed");
+            return ResponseEntity.status(500).body(new MessageDto("Internal Server Error"));
         }
     }
 
@@ -66,13 +63,11 @@ public class UserController {
     public ResponseEntity<?> deleteUser() {
         try {
             userDetailsServiceImplement.deleteUser();
-            return ResponseEntity.ok("User deleted successfully");
+            return ResponseEntity.noContent().build();
         } catch (UsernameNotFoundException e) {
-            System.out.println(e.getMessage());
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.status(404).body(new MessageDto("User not found"));
         } catch (Exception e) {
-            System.out.println(e.getMessage());
-            return ResponseEntity.badRequest().body("User delete failed");
+            return ResponseEntity.status(500).body(new MessageDto("User delete failed"));
         }
     }
 
@@ -80,10 +75,10 @@ public class UserController {
     @GetMapping("/users")
     public ResponseEntity<?> getAllUsers() {
         try {
-            return ResponseEntity.ok(userDetailsServiceImplement.getAllUsers());
+            return ResponseEntity.ok(
+                    new MessageDto("User list retrieved successfully", userDetailsServiceImplement.getAllUsers()));
         } catch (Exception e) {
-            System.out.println(e.getMessage());
-            return ResponseEntity.badRequest().body("Get all users failed");
+            return ResponseEntity.status(500).body(new MessageDto("Internal Server Error"));
         }
     }
 
@@ -91,13 +86,12 @@ public class UserController {
     @GetMapping("/users/{id}")
     public ResponseEntity<?> getUserById(@PathVariable Long id) {
         try {
-            return ResponseEntity.ok(userDetailsServiceImplement.getUserById(id));
+            return ResponseEntity.ok(new MessageDto("User information retrieved successfully",
+                    userDetailsServiceImplement.getUserById(id)));
         } catch (UsernameNotFoundException e) {
-            System.out.println(e.getMessage());
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.status(404).body(new MessageDto("User not found"));
         } catch (Exception e) {
-            System.out.println(e.getMessage());
-            return ResponseEntity.badRequest().body("Get user by id failed");
+            return ResponseEntity.status(500).body(new MessageDto("Get user by id failed"));
         }
     }
 
@@ -106,13 +100,11 @@ public class UserController {
     public ResponseEntity<?> updateUserPassword(@PathVariable Long id, @RequestBody String newPassword) {
         try {
             userDetailsServiceImplement.updatePassword(id, newPassword);
-            return ResponseEntity.ok("User password updated successfully");
+            return ResponseEntity.ok(new MessageDto("User password updated successfully"));
         } catch (UsernameNotFoundException e) {
-            System.out.println(e.getMessage());
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.status(404).body(new MessageDto("User not found"));
         } catch (Exception e) {
-            System.out.println(e.getMessage());
-            return ResponseEntity.badRequest().body("User password update failed");
+            return ResponseEntity.status(500).body(new MessageDto("Internal Server Error"));
         }
     }
 
@@ -121,13 +113,22 @@ public class UserController {
     public ResponseEntity<?> deleteUser(@PathVariable Long id) {
         try {
             userDetailsServiceImplement.deleteUser(id);
-            return ResponseEntity.ok("User deleted successfully");
+            return ResponseEntity.noContent().build();
         } catch (UsernameNotFoundException e) {
-            System.out.println(e.getMessage());
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.status(404).body(new MessageDto("User not found"));
         } catch (Exception e) {
-            System.out.println(e.getMessage());
-            return ResponseEntity.badRequest().body("User delete failed");
+            return ResponseEntity.status(500).body(new MessageDto("Internal Server Error"));
+        }
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("users/roles")
+    public ResponseEntity<?> getAllRoles() {
+        try {
+            return ResponseEntity
+                    .ok(new MessageDto("Roles retrieved successfully", userDetailsServiceImplement.getAllRoles()));
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body(new MessageDto("Internal Server Error"));
         }
     }
 
@@ -136,13 +137,11 @@ public class UserController {
     public ResponseEntity<?> updateUserRole(@PathVariable Long id, @RequestBody Set<Role> roles) {
         try {
             userDetailsServiceImplement.updateRole(id, roles);
-            return ResponseEntity.ok("User role updated successfully");
+            return ResponseEntity.ok(new MessageDto("User role updated successfully"));
         } catch (UsernameNotFoundException e) {
-            System.out.println(e.getMessage());
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.status(404).body(new MessageDto("User not found"));
         } catch (Exception e) {
-            System.out.println(e.getMessage());
-            return ResponseEntity.badRequest().body("User role update failed");
+            return ResponseEntity.status(500).body(new MessageDto("Internal Server Error"));
         }
     }
 
