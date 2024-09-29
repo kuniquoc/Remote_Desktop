@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import quochung.server.model.studymethod.Favorite;
 import quochung.server.model.studymethod.StudyMethod;
 import quochung.server.model.user.User;
+import quochung.server.payload.studymethod.StudyMethodElementDto;
 import quochung.server.repository.studymethod.FavoriteRepository;
 import quochung.server.repository.studymethod.StudyMethodRepository;
 import quochung.server.repository.user.UserRepository;
@@ -42,10 +43,19 @@ public class FavoriteService {
         favoriteRepository.delete(favorite);
     }
 
-    public List<StudyMethod> getFavoritesByUserId(Long userId) {
+    public List<StudyMethodElementDto> getFavoritesByUserId(Long userId) {
         List<StudyMethod> studyMethods = favoriteRepository.findByUserId(userId).stream().map(favStudyMethod -> {
             return favStudyMethod.getStudyMethod();
         }).toList();
-        return studyMethods;
+
+        return studyMethods.stream().map(studyMethod -> {
+            StudyMethodElementDto studyMethodElementDto = new StudyMethodElementDto();
+            studyMethodElementDto.setId(studyMethod.getId());
+            studyMethodElementDto.setName(studyMethod.getName());
+            studyMethodElementDto.setDescription(studyMethod.getDescription());
+            studyMethodElementDto.setThumbnail(studyMethod.getThumbnail());
+            studyMethodElementDto.setType(studyMethod.getType());
+            return studyMethodElementDto;
+        }).toList();
     }
 }

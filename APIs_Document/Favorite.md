@@ -6,7 +6,7 @@
 **Response Body (JSON):**
 ```json
 {
-    "message": "Favorite added successfully"
+    "message": "Thêm phương pháp học vào danh sách yêu thích thành công"
 }
 ```
 **Status Code:**  
@@ -36,19 +36,29 @@
 **Response Body (JSON):**
 ```json
 {   
-    "message": "User's favorite study methods retrieved successfully",
+    "message": "Lấy danh sách phương pháp học yêu thích thành công",
     "data": [
-                {
-                    "id": 2,
-                    "name": "Mind Mapping",
-                    "description": "Phương pháp tổ chức thông tin dưới dạng sơ đồ."
-                },
-                {
-                    "id": 1,
-                    "name": "Pomodoro Technique",
-                    "description": "Phương pháp quản lý thời gian với các phiên làm việc 25 phút."
-                }
-            ]
+        {
+            "id": 1,
+            "name": "Pomodoro Technique",
+            "description": "Phương pháp quản lý thời gian với các phiên làm việc 25 phút.",
+            "thumbnail": "https://example.com/thumbnails/pomodoro.png",
+            "type": {
+                "id": 8,
+                "name": "SoftSkills"
+            },
+        },
+        {
+            "id": 2,
+            "name": "Mind Mapping",
+            "description": "Phương pháp tổ chức thông tin dưới dạng sơ đồ.",
+            "thumbnail": "https://example.com/thumbnails/mind_mapping.png",
+            "type": {
+                "id": 2,
+                "name": "Thinking"
+            },
+        }
+    ]
 }
 
 ```

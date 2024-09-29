@@ -1,14 +1,14 @@
 package quochung.server.payload.schedule;
 
 import java.time.LocalDateTime;
-import java.util.Set;
-import quochung.server.model.schedule.Reminder;
+import java.util.ArrayList;
+import java.util.List;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.Setter;
 
 @Getter
-@AllArgsConstructor
+@Setter
 public class ScheduleElementDto {
     private Long id;
 
@@ -22,5 +22,5 @@ public class ScheduleElementDto {
 
     private String color;
 
-    private Set<Reminder> reminders;
+    private List<ReminderDto> reminders = new ArrayList<>();
 }

@@ -1,18 +1,18 @@
 package quochung.server.payload.schedule;
 
 import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 import jakarta.persistence.Embedded;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.Setter;
 import quochung.server.model.schedule.Recurrence;
 import quochung.server.model.schedule.SubjectType;
 import quochung.server.model.studymethod.StudyMethod;
 
 @Getter
-@AllArgsConstructor
+@Setter
 public class ScheduleResponseDto {
     private Long id;
 
@@ -28,14 +28,14 @@ public class ScheduleResponseDto {
 
     private String color;
 
-    private Set<SubjectType> types = new HashSet<>();
+    private List<SubjectType> types = new ArrayList<>();
 
-    private Set<StudyMethod> studyMethods = new HashSet<>();
+    private List<StudyMethod> studyMethods = new ArrayList<>();
 
     @Embedded
     private Recurrence recurrence;
 
-    private Set<Long> reminders = new HashSet<>();
+    private List<ReminderDto> reminders = new ArrayList<>();
 
     private String notes;
 }

@@ -10,9 +10,13 @@ import org.apache.coyote.BadRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import quochung.server.model.schedule.Reminder;
 import quochung.server.model.schedule.Schedule;
 import quochung.server.model.user.User;
+import quochung.server.payload.schedule.ReminderDto;
+import quochung.server.payload.schedule.ScheduleElementDto;
 import quochung.server.payload.schedule.ScheduleRequestDto;
+import quochung.server.payload.schedule.ScheduleResponseDto;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -35,7 +39,7 @@ public class ScheduleService {
     @Autowired
     private UserDetailsServiceImplement UserDetailsServiceImplement;
 
-    public Schedule createSchedule(ScheduleRequestDto scheduleDto) {
+    public Long createSchedule(ScheduleRequestDto scheduleDto) {
         User user = UserDetailsServiceImplement.getCurrentUser();
 
         Schedule newSchedule = new Schedule();
@@ -49,12 +53,46 @@ public class ScheduleService {
         newSchedule.setTypes(subjectTypeRepository.findByIdIn(scheduleDto.getTypeIds()));
         newSchedule.setStudyMethods(studyMethodRepository.findByIdIn(scheduleDto.getStudyMethodIds()));
         newSchedule.setRecurrence(scheduleDto.getRecurrence());
-        newSchedule.setReminders(reminderRepository.findByIdIn(scheduleDto.getReminderIds()));
+
+        for (ReminderDto reminder : scheduleDto.getReminders()) {
+            Reminder newReminder = new Reminder();
+            newReminder.setMethod(reminder.getMethod());
+            newReminder.setMinutesBefore(reminder.getMinutesBefore());
+            newReminder.setSchedule(newSchedule);
+            reminderRepository.save(newReminder);
+        }
+
         newSchedule.setNotes(scheduleDto.getNotes());
-        return scheduleRepository.save(newSchedule);
+        return scheduleRepository.save(newSchedule).getId();
     }
 
-    public List<Schedule> getSchedules(String mode) throws BadRequestException {
+    public ScheduleResponseDto getScheduleById(Long id) throws BadRequestException {
+        Schedule schedule = scheduleRepository.findById(id)
+                .orElseThrow(() -> new BadRequestException("Không tìm thấy lịch học"));
+
+        ScheduleResponseDto scheduleDto = new ScheduleResponseDto();
+        scheduleDto.setId(schedule.getId());
+        scheduleDto.setTitle(schedule.getTitle());
+        scheduleDto.setDescription(schedule.getDescription());
+        scheduleDto.setLocation(schedule.getLocation());
+        scheduleDto.setStartDateTime(schedule.getStartDateTime());
+        scheduleDto.setEndDateTime(schedule.getEndDateTime());
+        scheduleDto.setColor(schedule.getColor());
+        scheduleDto.setTypes(schedule.getTypes().stream().toList());
+        scheduleDto.setStudyMethods(schedule.getStudyMethods().stream().toList());
+        scheduleDto.setRecurrence(schedule.getRecurrence());
+        scheduleDto.setReminders(schedule.getReminders().stream().map(reminder -> {
+            ReminderDto reminderDto = new ReminderDto();
+            reminderDto.setId(reminder.getId());
+            reminderDto.setMethod(reminder.getMethod());
+            reminderDto.setMinutesBefore(reminder.getMinutesBefore());
+            return reminderDto;
+        }).toList());
+        scheduleDto.setNotes(schedule.getNotes());
+        return scheduleDto;
+    }
+
+    public List<ScheduleElementDto> getSchedules(String mode) throws BadRequestException {
         Long userId = UserDetailsServiceImplement.getCurrentUserId();
         LocalDateTime startTime = LocalDateTime.now();
 
@@ -70,27 +108,51 @@ public class ScheduleService {
             throw new BadRequestException("Không có chế độ nào phù hợp");
         }
 
-        return scheduleRepository.findByUserIdAndStartDateTimeBetween(userId, startTime, endTime);
+        return scheduleRepository.findByUserIdAndStartDateTimeBetween(userId, startTime, endTime).stream()
+                .map(schedule -> {
+                    ScheduleElementDto scheduleElementDto = new ScheduleElementDto();
+                    scheduleElementDto.setId(schedule.getId());
+                    scheduleElementDto.setTitle(schedule.getTitle());
+                    scheduleElementDto.setLocation(schedule.getLocation());
+                    scheduleElementDto.setStartDateTime(schedule.getStartDateTime());
+                    scheduleElementDto.setEndDateTime(schedule.getEndDateTime());
+                    scheduleElementDto.setColor(schedule.getColor());
+                    scheduleElementDto.setReminders(schedule.getReminders().stream().map(reminder -> {
+                        ReminderDto reminderDto = new ReminderDto();
+                        reminderDto.setId(reminder.getId());
+                        reminderDto.setMethod(reminder.getMethod());
+                        reminderDto.setMinutesBefore(reminder.getMinutesBefore());
+                        return reminderDto;
+                    }).toList());
+                    return scheduleElementDto;
+                }).toList();
     }
 
-    public Schedule getScheduleById(Long id) {
-        return scheduleRepository.findById(id).orElseThrow(() -> new RuntimeException("Schedule not found"));
-    }
+    public void updateSchedule(Long id, ScheduleRequestDto scheduleDto) throws BadRequestException {
+        Schedule existingSchedule = scheduleRepository.findById(id)
+                .orElseThrow(() -> new BadRequestException("Không tìm thấy lịch học"));
 
-    public Schedule updateSchedule(Long id, Schedule schedule) {
-        Schedule existingSchedule = getScheduleById(id);
-        existingSchedule.setTitle(schedule.getTitle());
-        existingSchedule.setDescription(schedule.getDescription());
-        existingSchedule.setLocation(schedule.getLocation());
-        existingSchedule.setStartDateTime(schedule.getStartDateTime());
-        existingSchedule.setEndDateTime(schedule.getEndDateTime());
-        existingSchedule.setColor(schedule.getColor());
-        existingSchedule.setTypes(schedule.getTypes());
-        existingSchedule.setStudyMethods(schedule.getStudyMethods());
-        existingSchedule.setRecurrence(schedule.getRecurrence());
-        existingSchedule.setReminders(schedule.getReminders());
-        existingSchedule.setNotes(schedule.getNotes());
-        return scheduleRepository.save(existingSchedule);
+        existingSchedule.setTitle(scheduleDto.getTitle());
+        existingSchedule.setDescription(scheduleDto.getDescription());
+        existingSchedule.setLocation(scheduleDto.getLocation());
+        existingSchedule.setStartDateTime(scheduleDto.getStartDateTime());
+        existingSchedule.setEndDateTime(scheduleDto.getEndDateTime());
+        existingSchedule.setColor(scheduleDto.getColor());
+        existingSchedule.setTypes(subjectTypeRepository.findByIdIn(scheduleDto.getTypeIds()));
+        existingSchedule.setStudyMethods(studyMethodRepository.findByIdIn(scheduleDto.getStudyMethodIds()));
+        existingSchedule.setRecurrence(scheduleDto.getRecurrence());
+
+        existingSchedule.getReminders().clear();
+        for (ReminderDto reminder : scheduleDto.getReminders()) {
+            Reminder newReminder = new Reminder();
+            newReminder.setMethod(reminder.getMethod());
+            newReminder.setMinutesBefore(reminder.getMinutesBefore());
+            newReminder.setSchedule(existingSchedule);
+            reminderRepository.save(newReminder);
+        }
+
+        existingSchedule.setNotes(scheduleDto.getNotes());
+        scheduleRepository.save(existingSchedule);
     }
 
     public void deleteSchedule(Long id) {

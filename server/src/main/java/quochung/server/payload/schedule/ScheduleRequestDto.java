@@ -5,15 +5,15 @@ import java.util.HashSet;
 import java.util.Set;
 
 import jakarta.persistence.Embedded;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.Setter;
 import quochung.server.model.schedule.Recurrence;
 
 @Getter
-@AllArgsConstructor
+@Setter
 public class ScheduleRequestDto {
     private Long id;
-
+    
     private String title;
 
     private String description;
@@ -33,12 +33,13 @@ public class ScheduleRequestDto {
     @Embedded
     private Recurrence recurrence;
 
-    private Set<Long> reminderIds = new HashSet<>();
+    private Set<ReminderDto> reminders = new HashSet<>();
 
     private String notes;
 
     public ScheduleRequestDto(String title, String description, String location, LocalDateTime startDateTime,
-            LocalDateTime endDateTime, String color, Set<Long> typeIds, Set<Long> studyMethodIds, Set<Long> reminderIds,
+            LocalDateTime endDateTime, String color, Set<Long> typeIds, Set<Long> studyMethodIds,
+            Set<ReminderDto> reminders,
             Recurrence recurrence, String notes) {
         this.title = title;
         this.description = description;
@@ -48,7 +49,7 @@ public class ScheduleRequestDto {
         this.color = color;
         this.typeIds = typeIds;
         this.studyMethodIds = studyMethodIds;
-        this.reminderIds = reminderIds;
+        this.reminders = reminders;
         this.recurrence = recurrence;
         this.notes = notes;
     }

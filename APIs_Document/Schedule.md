@@ -49,7 +49,7 @@
 
 **Possible Status Codes**:
 - `201 Created`: Lịch đã được tạo thành công.
-- `400 Bad Request`: Dữ liệu không hợp lệ hoặc thiếu trường bắt buộc.
+- `500 Internal Error`: Lỗi server
 
 ---
 
@@ -91,7 +91,7 @@
       "endRecurrence": "2024-12-31"
     },
     "reminders": [
-      {"method": 1, "minutesBefore": "30"},
+      {"id": 12, "method": 1, "minutesBefore": "30"},
 
     ],
     "notes": "Don't forget to bring the slides."
@@ -101,7 +101,8 @@
 
 ### **Possible Status Codes**:
 - `200 OK`: Trả về chi tiết lịch thành công.
-- `404 Not Found`: Lịch với ID được cung cấp không tồn tại.
+- `400 BadRequest`: Lịch với ID được cung cấp không tồn tại.
+- `500 Internal Error`: Lỗi server
 
 ---
 
@@ -121,7 +122,7 @@
 
 ```json
 {
-  "message": "Lấy thông tin các lịch thành công",
+  "message": "Lấy danh sách lịch học thành công",
   "data": [
     {
       "id": 123,
@@ -132,7 +133,7 @@
       "color": "#FF5733",
     },
     "reminders": [
-      {"method": 1, "minutesBefore": "30"},
+      {"id": 12, "method": 1, "minutesBefore": "30"},
 
     ],
   ]
@@ -141,7 +142,8 @@
 
 ### **Possible Status Codes**:
 - `200 OK`: Trả về chi tiết lịch thành công.
-- `404 Not Found`: Lịch với ID được cung cấp không tồn tại.
+- `400 BadRequest`: Lịch với ID được cung cấp không tồn tại.
+- `500 Internal Error`: Lỗi server
 
 ---
 
@@ -196,9 +198,9 @@
 ```
 
 **Possible Status Codes**:
-- `200 OK`: Lịch đã được cập nhật thành công.
-- `404 Not Found`: Lịch với ID được cung cấp không tồn tại.
-- `400 Bad Request`: Dữ liệu không hợp lệ hoặc thiếu trường bắt buộc.
+- `200 OK`: Trả về chi tiết lịch thành công.
+- `400 BadRequest`: Lịch với ID được cung cấp không tồn tại.
+- `500 Internal Error`: Lỗi server
 
 ---
 
@@ -223,6 +225,6 @@
   
 ### **Possible Status Codes**:
 - `204 No Content`: Lịch đã được xoá thành công.
-- `404 Not Found`: Lịch với ID được cung cấp không tồn tại.
+- `500 Internal Error`: Lỗi server
 
 ---
