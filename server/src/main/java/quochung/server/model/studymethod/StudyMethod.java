@@ -1,6 +1,5 @@
 package quochung.server.model.studymethod;
 
-import java.util.Set;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -28,7 +27,7 @@ public class StudyMethod {
 
     @ManyToOne
     @JoinColumn(name = "subject_type_id")
-    private Set<SubjectType> types;
+    private SubjectType type;
 
     private String thumbnail;
 

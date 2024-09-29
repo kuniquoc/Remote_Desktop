@@ -1,6 +1,5 @@
 package quochung.server.payload.studymethod;
 
-import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 
@@ -14,12 +13,12 @@ import quochung.server.model.schedule.SubjectType;
 public class StudyMethodDto {
     private Long id;
     private String name;
-    private Set<SubjectType> types;
+    private SubjectType type;
     private String thumbnail;
 
-    public StudyMethodDto(String name, Set<SubjectType> types, String thumbnail) {
+    public StudyMethodDto(String name, SubjectType type, String thumbnail) {
         this.name = name;
-        this.types = types;
+        this.type = type;
         this.thumbnail = thumbnail;
     }
 }

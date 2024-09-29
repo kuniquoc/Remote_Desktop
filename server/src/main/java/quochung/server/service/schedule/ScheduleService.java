@@ -8,14 +8,12 @@ import quochung.server.service.user.UserDetailsServiceImplement;
 
 import org.apache.coyote.BadRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import quochung.server.model.schedule.Schedule;
 import quochung.server.model.user.User;
 import quochung.server.payload.schedule.ScheduleRequestDto;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
