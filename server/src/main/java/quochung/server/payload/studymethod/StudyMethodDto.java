@@ -1,23 +1,25 @@
 package quochung.server.payload.studymethod;
 
+import java.util.Set;
+
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
-import quochung.server.model.StudyMethodType;
+import lombok.Getter;
+import quochung.server.model.schedule.SubjectType;
 
-@Data
+@Getter
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class StudyMethodDto {
     private Long id;
     private String name;
-    private StudyMethodType type;
+    private Set<SubjectType> types;
     private String thumbnail;
 
-    public StudyMethodDto(String name, StudyMethodType type, String thumbnail) {
+    public StudyMethodDto(String name, Set<SubjectType> types, String thumbnail) {
         this.name = name;
-        this.type = type;
+        this.types = types;
         this.thumbnail = thumbnail;
     }
 }

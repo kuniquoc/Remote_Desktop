@@ -14,8 +14,8 @@ import jakarta.servlet.ServletRequest;
 import jakarta.servlet.ServletResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
-import quochung.server.service.UserDetailsImplement;
-import quochung.server.service.UserDetailsServiceImplement;
+import quochung.server.service.user.UserDetailsImplement;
+import quochung.server.service.user.UserDetailsServiceImplement;
 
 @AllArgsConstructor
 public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter {

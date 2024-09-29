@@ -1,4 +1,4 @@
-package quochung.server.model;
+package quochung.server.model.user;
 
 import java.util.Collection;
 import java.time.LocalDate;

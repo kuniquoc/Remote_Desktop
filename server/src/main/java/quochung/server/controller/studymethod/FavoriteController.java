@@ -1,4 +1,4 @@
-package quochung.server.controller;
+package quochung.server.controller.studymethod;
 
 import org.apache.coyote.BadRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import quochung.server.payload.MessageDto;
-import quochung.server.service.FavoriteService;
+import quochung.server.service.studymethod.FavoriteService;
 
 @RestController
 @RequestMapping("/api/favorites")

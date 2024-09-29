@@ -1,4 +1,4 @@
-package quochung.server.model;
+package quochung.server.model.studymethod;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -10,6 +10,7 @@ import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import quochung.server.model.user.User;
 
 @Entity
 @Table(name = "favorites")

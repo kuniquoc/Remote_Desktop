@@ -1,9 +1,11 @@
-package quochung.server.repository;
+package quochung.server.repository.user;
 
 import org.springframework.stereotype.Repository;
 import org.springframework.data.jpa.repository.JpaRepository;
-import quochung.server.model.Role;
-import quochung.server.model.RoleName;
+
+import quochung.server.model.user.Role;
+import quochung.server.model.user.RoleName;
+
 import java.util.Optional;
 
 @Repository

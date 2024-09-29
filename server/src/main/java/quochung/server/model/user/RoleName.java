@@ -1,4 +1,4 @@
-package quochung.server.model;
+package quochung.server.model.user;
 
 public enum RoleName {
     ROLE_USER,

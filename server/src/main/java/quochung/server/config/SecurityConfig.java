@@ -14,7 +14,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import quochung.server.service.UserDetailsServiceImplement;
+import quochung.server.service.user.UserDetailsServiceImplement;
 import quochung.server.util.JwtAuthenticationFilter;
 import quochung.server.util.JwtUtils;
 

@@ -4,7 +4,7 @@ import java.util.Set;
 import java.time.LocalDate;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import quochung.server.model.Role;
+import quochung.server.model.user.Role;
 
 @Data
 @AllArgsConstructor

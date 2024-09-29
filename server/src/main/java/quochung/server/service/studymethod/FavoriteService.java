@@ -1,4 +1,4 @@
-package quochung.server.service;
+package quochung.server.service.studymethod;
 
 import java.util.List;
 
@@ -6,12 +6,12 @@ import org.apache.coyote.BadRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import quochung.server.model.Favorite;
-import quochung.server.model.StudyMethod;
-import quochung.server.model.User;
-import quochung.server.repository.FavoriteRepository;
-import quochung.server.repository.StudyMethodRepository;
-import quochung.server.repository.UserRepository;
+import quochung.server.model.studymethod.Favorite;
+import quochung.server.model.studymethod.StudyMethod;
+import quochung.server.model.user.User;
+import quochung.server.repository.studymethod.FavoriteRepository;
+import quochung.server.repository.studymethod.StudyMethodRepository;
+import quochung.server.repository.user.UserRepository;
 
 @Service
 public class FavoriteService {

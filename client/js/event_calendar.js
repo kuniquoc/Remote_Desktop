@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     // Check if the user is logged in by checking the token
     const token = localStorage.getItem('token');
 
@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // Redirect to login page if token is not found
         window.location.href = '../views/login.html';
     }
-    
+
     const eventList = document.getElementById('event-list');
     const modal = document.getElementById('event-modal');
     const closeModal = document.querySelector('.close');
@@ -38,7 +38,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // Filter events based on event type
-    document.getElementById('eventTypeFilter').addEventListener('change', function() {
+    document.getElementById('eventTypeFilter').addEventListener('change', function () {
         const selectedType = this.value;
         fetchEvents(selectedType);
     });
@@ -160,7 +160,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // Close modal
-    closeModal.addEventListener('click', function() {
+    closeModal.addEventListener('click', function () {
         modal.style.display = 'none';
         document.body.classList.remove('modal-open'); // Remove dark background
     });
@@ -180,7 +180,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // Handle form submission for adding/editing event
-    form.addEventListener('submit', async function(e) {
+    form.addEventListener('submit', async function (e) {
         e.preventDefault();
 
         const newEvent = {
@@ -242,7 +242,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     // Open form for adding new event
-    addEventBtn.addEventListener('click', function() {
+    addEventBtn.addEventListener('click', function () {
         openModal('add', null); // Change 'edit' to 'add' for adding new event
         successMessage.innerHTML = '';
         form.reset(); // Reset the form fields for adding a new event

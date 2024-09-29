@@ -1,9 +1,11 @@
-package quochung.server.repository;
+package quochung.server.repository.user;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
+
+import quochung.server.model.user.User;
+
 import java.util.Optional;
-import quochung.server.model.User;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {

@@ -1,10 +1,10 @@
-package quochung.server.service;
+package quochung.server.service.studymethod;
 
 import org.springframework.stereotype.Service;
 
-import quochung.server.model.StudyMethod;
-import quochung.server.repository.StudyMethodRepository;
+import quochung.server.model.studymethod.StudyMethod;
 import quochung.server.payload.studymethod.*;
+import quochung.server.repository.studymethod.StudyMethodRepository;
 
 import java.util.List;
 
@@ -19,7 +19,7 @@ public class StudyMethodService {
     public StudyMethod createStudyMethod(StudyMethodDto studyMethodDto) {
         StudyMethod studyMethod = new StudyMethod();
         studyMethod.setName(studyMethodDto.getName());
-        studyMethod.setType(studyMethodDto.getType());
+        studyMethod.setTypes(studyMethodDto.getTypes());
         studyMethod.setThumbnail(studyMethodDto.getThumbnail());
         return studyMethodRepository.save(studyMethod);
     }
@@ -37,7 +37,7 @@ public class StudyMethodService {
         StudyMethod studyMethod = studyMethodRepository.findById(id)
                 .orElseThrow(() -> new BadRequestException("Phương pháp học không tồn tại"));
         studyMethod.setName(studyMethodDto.getName());
-        studyMethod.setType(studyMethodDto.getType());
+        studyMethod.setTypes(studyMethodDto.getTypes());
         studyMethod.setThumbnail(studyMethodDto.getThumbnail());
         return studyMethodRepository.save(studyMethod);
     }

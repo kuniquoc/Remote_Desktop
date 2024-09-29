@@ -1,4 +1,4 @@
-package quochung.server.service;
+package quochung.server.service.user;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -9,15 +9,15 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
-import quochung.server.model.Role;
-import quochung.server.model.User;
 import quochung.server.payload.auth.JwtDto;
 import quochung.server.payload.auth.SignInDto;
 import quochung.server.payload.auth.SignUpDto;
-import quochung.server.repository.UserRepository;
 import quochung.server.util.JwtUtils;
-import quochung.server.repository.RoleRepository;
-import quochung.server.model.RoleName;
+import quochung.server.repository.user.RoleRepository;
+import quochung.server.repository.user.UserRepository;
+import quochung.server.model.user.Role;
+import quochung.server.model.user.RoleName;
+import quochung.server.model.user.User;
 
 @Service
 public class AuthService {

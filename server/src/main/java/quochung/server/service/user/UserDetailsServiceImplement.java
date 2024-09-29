@@ -1,4 +1,4 @@
-package quochung.server.service;
+package quochung.server.service.user;
 
 import java.util.Set;
 import java.util.List;
@@ -10,13 +10,13 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import quochung.server.model.User;
-import quochung.server.model.Role;
-import quochung.server.payload.user.UserProfileDto;
 import quochung.server.payload.user.UserDetailDto;
 import quochung.server.payload.user.UserListElementDto;
-import quochung.server.repository.RoleRepository;
-import quochung.server.repository.UserRepository;
+import quochung.server.payload.user.UserProfileDto;
+import quochung.server.model.user.Role;
+import quochung.server.model.user.User;
+import quochung.server.repository.user.RoleRepository;
+import quochung.server.repository.user.UserRepository;
 
 @Service
 public class UserDetailsServiceImplement implements UserDetailsService {

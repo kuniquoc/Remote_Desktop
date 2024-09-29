@@ -4,9 +4,9 @@ import java.util.Collection;
 import org.springframework.security.core.GrantedAuthority;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 
-@Data
+@Getter
 @AllArgsConstructor
 public class JwtDto {
     private String token;

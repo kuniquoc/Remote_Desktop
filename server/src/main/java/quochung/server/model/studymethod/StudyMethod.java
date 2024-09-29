@@ -1,12 +1,17 @@
-package quochung.server.model;
+package quochung.server.model.studymethod;
+
+import java.util.Set;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import quochung.server.model.schedule.SubjectType;
 import lombok.AllArgsConstructor;
 
 @Entity
@@ -21,7 +26,9 @@ public class StudyMethod {
 
     private String name;
 
-    private StudyMethodType type;
+    @ManyToOne
+    @JoinColumn(name = "subject_type_id")
+    private Set<SubjectType> types;
 
     private String thumbnail;
 

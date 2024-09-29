@@ -1,11 +1,11 @@
-package quochung.server.service;
+package quochung.server.service.user;
 
 import java.util.Collection;
 import java.time.LocalDate;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import quochung.server.model.User;
+import quochung.server.model.user.User;
 
 public class UserDetailsImplement implements UserDetails {
     private Long id;

@@ -1,4 +1,4 @@
-package quochung.server.controller;
+package quochung.server.controller.user;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -10,7 +10,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import quochung.server.payload.MessageDto;
 import quochung.server.payload.auth.*;
-import quochung.server.service.AuthService;
+import quochung.server.service.user.AuthService;
 
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;

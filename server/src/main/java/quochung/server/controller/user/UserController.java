@@ -1,20 +1,20 @@
-package quochung.server.controller;
+package quochung.server.controller.user;
 
 import java.util.Set;
-import quochung.server.model.Role;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
 import quochung.server.payload.MessageDto;
-import quochung.server.payload.user.*;
-import quochung.server.service.UserDetailsImplement;
-import quochung.server.service.UserDetailsServiceImplement;
+import quochung.server.payload.user.PasswordUpdateDto;
+import quochung.server.payload.user.UserProfileDto;
+import quochung.server.service.user.UserDetailsServiceImplement;
+import quochung.server.model.user.Role;
+
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 @RestController
 @RequestMapping("/api")

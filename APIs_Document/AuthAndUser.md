@@ -13,7 +13,7 @@
 **Response Body (JSON):**
 ```json
 {
-    "message": "User registered successfully",
+    "message": "Đăng ký người dùng thành công",
 }
 ```
 **Status Code:**  
@@ -64,7 +64,7 @@
 **Response Body (JSON):**
 ```json
 {
-    "message": "User information retrieved successfully",
+    "message": "Thông tin người dùng được lấy thành công",
     "data": {
         "fullName": "John Doe",
         "birthday": "1990-01-01",
@@ -98,7 +98,7 @@
 **Response Body (JSON):**
 ```json
 {
-    "message": "User profile updated successfully",
+    "message": "Cập nhật thông tin người dùng thành công",
 }
 ```
 **Status Code:**  
@@ -121,7 +121,7 @@
 **Response Body (JSON):**
 ```json
 {
-    "message": "User password updated successfully",
+    "message": "Cập nhật mật khẩu người dùng thành công",
 }
 ```
 **Status Code:**  
@@ -155,7 +155,7 @@ no content
 **Response Body (JSON):**
 ```json
 {
-    "message": "User list retrieved successfully",
+    "message": "Thông tin các người dùng được lấy thành công",
     "data": [
         {
             "id": 1,
@@ -186,7 +186,7 @@ no content
 **Response Body (JSON):**
 ```json
 {
-    "message": "User information retrieved successfully",
+    "message": "Thông tin người dùng được lấy thành công",
     "data": {
         "id": 1,
         "roles": [
@@ -221,7 +221,7 @@ no content
 **Response Body (JSON):**
 ```json
 {
-    "message": "User password updated successfully",
+    "message": "Cập nhật mật khẩu người dùng thành công",
 }
 ```
 **Status Code:**  
@@ -253,7 +253,7 @@ no content
 **Response Body (JSON):**
 ```json
 {
-    "message": "Roles retrieved successfully",
+    "message": "Quyền tài khoản cập nhật thành công",
     "data": [
         {"id": 1, "name": "ROLE_USER"},
         {"id": 2, "name": "ROLE_ADMIN"}
@@ -282,7 +282,7 @@ no content
 **Response Body (JSON):**
 ```json
 {
-    "message": "User roles updated successfully",
+    "message": "Cập nhật quyền tài khoản thành công",
     "data": {
         "roles": [
             {"id": 1, "name": "ROLE_USER"},
