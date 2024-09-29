@@ -3,6 +3,8 @@ package quochung.server.controller.studymethod;
 import org.apache.coyote.BadRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.method.P;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,6 +27,7 @@ public class StudyMethodController {
     private StudyMethodService studyMethodService;
 
     @PostMapping
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<?> createStudyMethod(@RequestBody StudyMethodDetailDto studyMethodDetailDto) {
         try {
             studyMethodDetailDto.setDetail(HtmlSanitizer.escapeHtml(studyMethodDetailDto.getDetail()));
@@ -39,6 +42,7 @@ public class StudyMethodController {
     }
 
     @GetMapping
+    @PreAuthorize("hasRole('ROLE_User')")
     public ResponseEntity<?> getAllStudyMethods(@RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "5") int size, @RequestParam(required = false) String type) {
         try {
@@ -52,6 +56,7 @@ public class StudyMethodController {
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasRole('ROLE_USER')")
     public ResponseEntity<?> getStudyMethodById(@PathVariable Long id) {
         try {
             String message = "Lấy thông tin phương pháp học thành công";
@@ -66,6 +71,7 @@ public class StudyMethodController {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<?> updateStudyMethod(@PathVariable Long id,
             @RequestBody StudyMethodDetailDto studyMethodDetailDto) {
         try {
@@ -83,6 +89,7 @@ public class StudyMethodController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<?> deleteStudyMethod(@PathVariable Long id) {
         try {
             studyMethodService.deleteStudyMethod(id);

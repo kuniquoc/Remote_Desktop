@@ -3,6 +3,8 @@ package quochung.server.controller.studymethod;
 import org.apache.coyote.BadRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.method.P;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,6 +22,7 @@ public class FavoriteController {
     private FavoriteService favoriteService;
 
     @PostMapping
+    @PreAuthorize("hasRole('ROLE_USER')")
     public ResponseEntity<?> addFavorite(@RequestParam("userId") Long userId,
             @RequestParam("studyMethodId") Long studyMethodId) {
         try {
@@ -35,6 +38,7 @@ public class FavoriteController {
     }
 
     @DeleteMapping
+    @PreAuthorize("hasRole('ROLE_USER')")
     public ResponseEntity<?> removeFavorite(@RequestParam("userId") Long userId,
             @RequestParam("studyMethodId") Long studyMethodId) {
         try {
@@ -49,6 +53,7 @@ public class FavoriteController {
     }
 
     @GetMapping("/{userId}")
+    @PreAuthorize("hasRole('ROLE_USER')")
     public ResponseEntity<?> getFavoritesByUserId(@RequestParam("userId") Long userId) {
         try {
             String message = "Lấy danh sách phương pháp học yêu thích thành công";
