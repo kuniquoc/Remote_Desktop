@@ -22,17 +22,18 @@ public class ScheduleController {
         return ResponseEntity.ok(createdSchedule);
     }
 
-    @GetMapping
-    public ResponseEntity<List<Schedule>> getSchedules(@RequestParam(required = false) Integer month,
-            @RequestParam(required = false) Integer year) {
-        List<Schedule> schedules;
-        if (month != null && year != null) {
-            schedules = scheduleService.getSchedulesByMonthAndYear(month, year);
-        } else {
-            schedules = scheduleService.getAllSchedules();
-        }
-        return ResponseEntity.ok(schedules);
-    }
+    // @GetMapping
+    // public ResponseEntity<List<Schedule>> getSchedules(@RequestParam(required =
+    // false) Integer month,
+    // @RequestParam(required = false) Integer year) {
+    // List<Schedule> schedules;
+    // if (month != null && year != null) {
+    // schedules = scheduleService.getSchedulesByMonthAndYear(month, year);
+    // } else {
+    // schedules = scheduleService.getAllSchedules();
+    // }
+    // return ResponseEntity.ok(schedules);
+    // }
 
     @GetMapping("/{id}")
     public ResponseEntity<Schedule> getScheduleById(@PathVariable Long id) {
