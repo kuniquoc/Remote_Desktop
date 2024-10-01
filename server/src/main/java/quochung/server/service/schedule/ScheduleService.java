@@ -18,6 +18,8 @@ import quochung.server.payload.schedule.ScheduleElementDto;
 import quochung.server.payload.schedule.ScheduleRequestDto;
 import quochung.server.payload.schedule.ScheduleResponseDto;
 
+import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -53,6 +55,9 @@ public class ScheduleService {
         newSchedule.setTypes(subjectTypeRepository.findByIdIn(scheduleDto.getTypeIds()));
         newSchedule.setStudyMethods(studyMethodRepository.findByIdIn(scheduleDto.getStudyMethodIds()));
         newSchedule.setRecurrence(scheduleDto.getRecurrence());
+        newSchedule.setNotes(scheduleDto.getNotes());
+
+        scheduleRepository.save(newSchedule);
 
         for (ReminderDto reminder : scheduleDto.getReminders()) {
             Reminder newReminder = new Reminder();
@@ -62,8 +67,7 @@ public class ScheduleService {
             reminderRepository.save(newReminder);
         }
 
-        newSchedule.setNotes(scheduleDto.getNotes());
-        return scheduleRepository.save(newSchedule).getId();
+        return newSchedule.getId();
     }
 
     public ScheduleResponseDto getScheduleById(Long id) throws BadRequestException {
@@ -92,18 +96,28 @@ public class ScheduleService {
         return scheduleDto;
     }
 
-    public List<ScheduleElementDto> getSchedules(String mode) throws BadRequestException {
-        Long userId = UserDetailsServiceImplement.getCurrentUserId();
-        LocalDateTime startTime = LocalDateTime.now();
+    public LocalDate previousSunday(LocalDate date) {
+        if (date.getDayOfWeek() == DayOfWeek.SUNDAY) {
+            return date;
+        }
+        return date.with(DayOfWeek.SUNDAY).minusDays(7);
+    }
 
+    public List<ScheduleElementDto> getSchedules(String mode, LocalDate viewDate) throws BadRequestException {
+        Long userId = UserDetailsServiceImplement.getCurrentUser().getId();
+
+        LocalDateTime startTime;
         LocalDateTime endTime;
 
         if (mode.equals("week")) {
-            endTime = LocalDateTime.now().plusDays(7);
+            startTime = previousSunday(viewDate).atStartOfDay();
+            endTime = startTime.plusDays(7).minusSeconds(1);
         } else if (mode.equals("month")) {
-            endTime = LocalDateTime.now().plusMonths(1);
+            startTime = previousSunday(viewDate.withDayOfMonth(1)).atStartOfDay();
+            endTime = startTime.plusMonths(1).minusSeconds(1);
         } else if (mode.equals("year")) {
-            endTime = LocalDateTime.now().plusYears(1);
+            startTime = previousSunday(viewDate.withDayOfYear(1)).atStartOfDay();
+            endTime = startTime.plusYears(1).minusSeconds(1);
         } else {
             throw new BadRequestException("Không có chế độ nào phù hợp");
         }

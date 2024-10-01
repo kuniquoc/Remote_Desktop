@@ -14,7 +14,6 @@ import jakarta.servlet.ServletRequest;
 import jakarta.servlet.ServletResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
-import quochung.server.service.user.UserDetailsImplement;
 import quochung.server.service.user.UserDetailsServiceImplement;
 
 @AllArgsConstructor
@@ -48,10 +47,6 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                     userDetails, null, userDetails.getAuthorities());
 
             SecurityContextHolder.getContext().setAuthentication(authentication);
-
-            System.out.println(
-                    "Authentication: " + ((UserDetailsImplement) SecurityContextHolder.getContext().getAuthentication()
-                            .getPrincipal()).getId());
         }
 
         filterChain.doFilter(request, response);

@@ -3,7 +3,7 @@ package quochung.server.model.schedule;
 import java.time.*;
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonAlias;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import jakarta.persistence.Embeddable;
 import jakarta.persistence.EnumType;
@@ -22,7 +22,7 @@ public class Recurrence {
     @Enumerated(EnumType.STRING)
     private Frequency frequency;
 
-    @JsonAlias("interval")
+    @JsonProperty("interval")
     private int interval_value;
     private List<DayOfWeek> DaysOfWeek;
     private LocalDate endRecurrence;

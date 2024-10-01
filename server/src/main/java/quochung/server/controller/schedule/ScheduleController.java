@@ -4,6 +4,7 @@ import quochung.server.payload.MessageDto;
 import quochung.server.payload.schedule.ScheduleRequestDto;
 import quochung.server.service.schedule.ScheduleService;
 
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -48,11 +49,26 @@ public class ScheduleController {
         }
     }
 
-    @GetMapping
-    public ResponseEntity<?> getSchedules(@RequestParam(defaultValue = "month") String mode) {
+    @GetMapping("/mode/{mode}")
+    public ResponseEntity<?> getSchedules(@PathVariable String mode) {
         try {
             String message = "Lấy danh sách lịch học thành công";
-            Object data = scheduleService.getSchedules(mode);
+            Object data = scheduleService.getSchedules(mode, LocalDate.now());
+            return ResponseEntity.ok(new MessageDto(message, data));
+        } catch (BadRequestException e) {
+            return ResponseEntity.status(400).body(new MessageDto(e.getMessage()));
+        } catch (Exception e) {
+            System.out.println("Error: " + e);
+            return ResponseEntity.status(500).body(new MessageDto("Lỗi server"));
+        }
+    }
+
+    @GetMapping("/mode/{mode}/{year}/{month}/{day}")
+    public ResponseEntity<?> getSchedules(@PathVariable String mode, @PathVariable int year, @PathVariable int month,
+            @PathVariable int day) {
+        try {
+            String message = "Lấy danh sách lịch học thành công";
+            Object data = scheduleService.getSchedules(mode, LocalDate.of(year, month, month));
             return ResponseEntity.ok(new MessageDto(message, data));
         } catch (BadRequestException e) {
             return ResponseEntity.status(400).body(new MessageDto(e.getMessage()));

@@ -19,7 +19,7 @@
   "startDateTime": "2024-09-30T10:00:00",
   "endDateTime": "2024-09-30T11:00:00",
   "color": "#FF5733",
-  "typeIds": [1, 2], //    Memory,Thinking,Language,Mathematics,Science,History,Arts,SoftSkills,ComputerScience,Economics,
+  "typeIds": [1, 2],
   "studyMethodIds": [1, 3],
   "recurrence": {
     "frequency": "WEEKLY",
@@ -28,7 +28,7 @@
     "endRecurrence": "2024-12-31"
   },
   "reminders": [
-    {"method": 1, "minutesBefore": "30"}
+    {"method": "EMAIL", "minutesBefore": "30"}
   ],
   "notes": "Đừng quên mang theo slide"
 }
@@ -91,7 +91,7 @@
       "endRecurrence": "2024-12-31"
     },
     "reminders": [
-      {"id": 12, "method": 1, "minutesBefore": "30"},
+      {"id": 12, "method": "EMAIL", "minutesBefore": "30"},
 
     ],
     "notes": "Don't forget to bring the slides."
@@ -107,9 +107,9 @@
 ---
 
 ## 3. Xem các lịch trình
-
-**Endpoint**: `GET /api/schedules?mode=week`
- -mode(week, month, year): dạng lịch muốn xem (mặc định là month)
+### 3.1 Lịch trình hiện tại
+**Endpoint**: `GET /api/schedules/mode/{mode}`
+ -mode(week, month, year): dạng lịch muốn xem hiện tại
 
 - **Mục đích**: Xem các lịch trình.
 
@@ -133,7 +133,41 @@
       "color": "#FF5733",
     },
     "reminders": [
-      {"id": 12, "method": 1, "minutesBefore": "30"},
+      {"id": 12, "method": "EMAIL", "minutesBefore": "30"},
+
+    ],
+  ]
+}
+```
+
+### 3.2 Lịch trình vào một ngày nào đó
+**Endpoint**: `GET /api/schedules/mode/{mode}/{year}/{month}/{day}`
+ -mode(week, month, year): dạng lịch muốn xem hiện tại
+ -year, month, day: ngày 
+
+- **Mục đích**: Xem các lịch trình.
+
+**Request Headers**:
+| Key          | Value            |
+| ------------ | ---------------- |
+| Content-Type | application/json |
+
+**Response**:
+
+```json
+{
+  "message": "Lấy danh sách lịch học thành công",
+  "data": [
+    {
+      "id": 123,
+      "title": "Meeting with team",
+      "location": "Office Room 202",
+      "startDateTime": "2024-09-30T10:00:00",
+      "endDateTime": "2024-09-30T11:00:00",
+      "color": "#FF5733",
+    },
+    "reminders": [
+      {"id": 12, "method": "EMAIL", "minutesBefore": "30"},
 
     ],
   ]
@@ -183,7 +217,7 @@
     "endRecurrence": "2024-12-31"
   },
   "reminders": [
-    {"method": 1, "minutesBefore": "30"}
+    {"method": "EMAIL", "minutesBefore": "30"}
   ],
   "notes": "Ghi chú mới"
 }
