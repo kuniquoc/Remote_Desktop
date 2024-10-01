@@ -1,254 +1,275 @@
+
+const typeOptions = {
+    1: 'Một',
+    2: 'Hai',
+    3: 'Ba'
+};
+
+const studyMethodOptions = {
+    1: 'Lecture',
+    2: 'Discussion',
+    3: 'Self-study'
+};
+
+const daysOfWeekOptions = {
+    'MONDAY': 'Thứ Hai',
+    'TUESDAY': 'Thứ Ba',
+    'WEDNESDAY': 'Thứ Tư',
+    'THURSDAY': 'Thứ Năm',
+    'FRIDAY': 'Thứ Sáu',
+    'SATURDAY': 'Thứ Bảy',
+    'SUNDAY': 'Chủ Nhật'
+};
+
+
 document.addEventListener('DOMContentLoaded', function () {
-    // Check if the user is logged in by checking the token
-    const token = localStorage.getItem('token');
 
-    if (!token) {
-        // Redirect to login page if token is not found
-        window.location.href = '../views/login.html';
-    }
+// const apiBaseUrl = 'http://localhost:8080/api/schedules';
+const apiBaseUrl = 'http://localhost:3000/schedules'; // Mock API
 
-    const eventList = document.getElementById('event-list');
-    const modal = document.getElementById('event-modal');
-    const closeModal = document.querySelector('.close');
-    const addEventBtn = document.getElementById('add-event-btn');
-    const form = document.getElementById('event-form');
-    const successMessage = document.getElementById('success-message');
-    const saveBtn = document.getElementById('save-btn');
-    const mockAPI = 'http://localhost:3000/events'; // Point to local JSON Server
-    let currentEventId = null;
+  // Updated API base URL to match backend
+const addEventBtn = document.getElementById('addEventBtn');
+const eventFormPopup = document.getElementById('eventFormPopup');
+const closeBtn = document.querySelector('.close');
+const eventForm = document.getElementById('eventForm');
+const eventList = document.getElementById('eventList').getElementsByTagName('tbody')[0];
+const eventTableBody = document.getElementById('eventTableBody');
+const typeIdsSelect = document.getElementById('typeIds');
+const studyMethodIdsSelect = document.getElementById('studyMethodIds');
+const recurrenceFrequency = document.getElementById('recurrenceFrequency');
+const recurrenceInterval = document.getElementById('recurrenceInterval');
+const daysOfWeekSelect = document.getElementById('daysOfWeek');
+const endRecurrenceInput = document.getElementById('endRecurrence');
+const remindersMethodSelect = document.getElementById('remindersMethod');
+const remindersMinutesBefore = document.getElementById('remindersMinutesBefore');
 
-    // Function to format datetime in DD-MM-YYYY HH:mm format (24-hour)
-    function formatDateTime(dateTimeStr) {
-        const date = new Date(dateTimeStr);
-        const day = String(date.getDate()).padStart(2, '0');
-        const month = String(date.getMonth() + 1).padStart(2, '0');
-        const year = date.getFullYear();
-        const hours = String(date.getHours()).padStart(2, '0');
-        const minutes = String(date.getMinutes()).padStart(2, '0');
+// Check if the user is authenticated by checking for the token
+const token = localStorage.getItem('token');
+if (!token) {
+    // Redirect to login page if token is not found
+    window.location.href = '../views/login.html';
+    return;
+}
 
-        return `${day}-${month}-${year} ${hours}:${minutes}`;
-    }
+function formatDateTime(dateTimeString) {
+    const date = new Date(dateTimeString);
+    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const year = date.getFullYear();
+    const hours = String(date.getHours()).padStart(2, '0');
+    const minutes = String(date.getMinutes()).padStart(2, '0');
+    const seconds = String(date.getSeconds()).padStart(2, '0');
 
+    return `${day}-${month}-${year} ${hours}:${minutes}:${seconds}`;
+}
 
-    // Fetch events from the mock API
-    async function fetchEvents() {
-        const response = await fetch(mockAPI);
-        const events = await response.json();
-        displayEvents(events);
-    }
+// Debug
+console.log('Add Event Button:', addEventBtn);
+console.log('Event Form Popup:', eventFormPopup);
 
-    // Filter events based on event type
-    document.getElementById('eventTypeFilter').addEventListener('change', function () {
-        const selectedType = this.value;
-        fetchEvents(selectedType);
-    });
-
-    // Updated fetchEvents function to apply filtering
-    async function fetchEvents(filterType = 'all') {
-        const response = await fetch(mockAPI);
-        const events = await response.json();
-        const filteredEvents = (filterType === 'all') ? events : events.filter(event => event.eventType === filterType);
-        displayEvents(filteredEvents);
-    }
-
-
-    // Display events in a table
-    function displayEvents(events) {
-        eventList.innerHTML = '';
-        events.forEach(event => {
-            const row = document.createElement('tr');
-
-            row.innerHTML = `
-                <td>${event.title}</td>
-                <td>${formatDateTime(event.startDateTime)}</td>
-                <td>${formatDateTime(event.endDateTime)}</td>
-                <td>${event.eventType}</td>
-                <td>${event.location}</td>
-                <td>
-                    <button class="view-btn" data-id="${event.id}">👁️</button>
-                    <button class="edit-btn" data-id="${event.id}">✏️</button>
-                    <button class="delete-btn" data-id="${event.id}">🗑️</button>
-                </td>
-            `;
-            eventList.appendChild(row);
-        });
-
-        // Add event listeners for the action buttons
-        document.querySelectorAll('.view-btn').forEach(btn => {
-            btn.addEventListener('click', viewEvent);
-        });
-
-        document.querySelectorAll('.edit-btn').forEach(btn => {
-            btn.addEventListener('click', editEvent);
-        });
-
-        document.querySelectorAll('.delete-btn').forEach(btn => {
-            btn.addEventListener('click', deleteEvent);
-        });
-    }
-
-    // View event details
-    function viewEvent(e) {
-        const eventId = e.target.getAttribute('data-id');
-        openModal('view', eventId);
-    }
-
-    // Edit event details
-    function editEvent(e) {
-        const eventId = e.target.getAttribute('data-id');
-        openModal('edit', eventId);
-    }
-
-    // Delete event
-    async function deleteEvent(e) {
-        const eventId = e.target.getAttribute('data-id');
-        const confirmDelete = confirm('Are you sure you want to delete this event?');
-        if (confirmDelete) {
-            await fetch(`${mockAPI}/${eventId}`, { method: 'DELETE' });
-            fetchEvents(); // Refresh event list after deletion
+// Options
+    populateSelectOptions(typeIdsSelect, typeOptions);
+    populateSelectOptions(studyMethodIdsSelect, studyMethodOptions);
+    populateSelectOptions(daysOfWeekSelect, daysOfWeekOptions);
+function populateSelectOptions(selectElement, options) {
+    if (selectElement) {
+        for (const [value, label] of Object.entries(options)) {
+            const option = document.createElement('option');
+            option.value = value;
+            option.textContent = label;
+            selectElement.appendChild(option);
         }
     }
+}
 
-    // Open modal for viewing, editing, or adding
-    async function openModal(mode, eventId) {
-        if (eventId) {
-            const response = await fetch(`${mockAPI}/${eventId}`);
-            const event = await response.json();
+// Fetch and display events when page loads
+fetchEvents();
 
-            // Populate form with event data if eventId exists (for view/edit modes)
-            document.getElementById('title').value = event.title;
-            document.getElementById('description').value = event.description;
-            document.getElementById('location').value = event.location;
-            document.getElementById('courseCode').value = event.courseCode;
-            document.getElementById('startDateTime').value = event.startDateTime;
-            document.getElementById('endDateTime').value = event.endDateTime;
-            document.getElementById('eventType').value = event.eventType;
-            document.getElementById('reminder').value = event.reminders[0].minutesBefore || 60;
-
-            if (event.recurrence) {
-                document.getElementById('frequency').value = event.recurrence.frequency;
-                document.getElementById('interval').value = event.recurrence.interval || 1;
-                document.getElementById('daysOfWeek').value = event.recurrence.daysOfWeek.join(', ');
-                document.getElementById('endRecurrence').value = event.recurrence.endRecurrence || '';
-            } else {
-                document.getElementById('frequency').value = 'none';
-                document.getElementById('interval').value = '';
-                document.getElementById('daysOfWeek').value = '';
-                document.getElementById('endRecurrence').value = '';
-            }
-        }
-
-        if (mode === 'view') {
-            disableForm(); // Disable fields in view mode
-            successMessage.innerHTML = '';
-            saveBtn.classList.add('hidden');
-        } else if (mode === 'edit') {
-            enableForm(); // Enable fields in edit mode
-            successMessage.innerHTML = '';
-            saveBtn.classList.remove('hidden');
-            currentEventId = eventId; // Set current event ID for edit mode
-        } else if (mode === 'add') {
-            enableForm(); // Enable fields in add mode
-            form.reset(); // Reset the form to empty for adding new event
-            successMessage.innerHTML = '';
-            saveBtn.classList.remove('hidden');
-            currentEventId = null; // No event ID for new event
-        }
-
-        modal.style.display = 'block'; // Show the modal
-        document.body.classList.add('modal-open'); // Darken background
-    }
-
-    // Close modal
-    closeModal.addEventListener('click', function () {
-        modal.style.display = 'none';
-        document.body.classList.remove('modal-open'); // Remove dark background
-    });
-
-    // Disable form fields for viewing
-    function disableForm() {
-        Array.from(form.elements).forEach(element => {
-            element.disabled = true;
-        });
-    }
-
-    // Enable form fields for editing (including Title)
-    function enableForm() {
-        Array.from(form.elements).forEach(element => {
-            element.disabled = false; // Make all fields editable
-        });
-    }
-
-    // Handle form submission for adding/editing event
-    form.addEventListener('submit', async function (e) {
-        e.preventDefault();
-
-        const newEvent = {
-            title: document.getElementById('title').value,
-            description: document.getElementById('description').value,
-            location: document.getElementById('location').value,
-            courseCode: document.getElementById('courseCode').value,
-            startDateTime: document.getElementById('startDateTime').value,
-            endDateTime: document.getElementById('endDateTime').value,
-            eventType: document.getElementById('eventType').value,
-            reminders: [
-                {
-                    method: 'email',
-                    minutesBefore: document.getElementById('reminder').value
-                }
-            ],
-            recurrence: {
-                frequency: document.getElementById('frequency').value,
-                interval: document.getElementById('interval').value,
-                daysOfWeek: document.getElementById('daysOfWeek').value.split(',').map(day => day.trim()),
-                endRecurrence: document.getElementById('endRecurrence').value
-            }
-        };
-
-        if (!currentEventId) {
-            // If no event ID (new event), make a POST request to create the event
-            const response = await fetch(mockAPI, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(newEvent) // Send new event data to the server
-            });
-
-            if (response.ok) {
-                successMessage.innerHTML = 'Thêm lịch mới thành công!';
-                successMessage.style.color = 'green';
-                fetchEvents(); // Refresh event list
-            }
+// Show the form popup to add a new event if addEventBtn exists
+if (addEventBtn) {
+    addEventBtn.onclick = function () {
+        console.log("Add Event button clicked");  // Debugging log
+        if (eventFormPopup) {
+            eventFormPopup.classList.add('show');
+            console.log("Event Form Popup activated");  // Debugging log
         } else {
-            // If event ID exists, make a PUT request to update the event
-            const response = await fetch(`${mockAPI}/${currentEventId}`, {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(newEvent)
-            });
+            console.error("Event Form Popup element not found");
+        }
+    };
+} else {
+    console.error("Add Event Button element not found");
+}
 
-            if (response.ok) {
-                successMessage.innerHTML = 'Cập nhật lịch thành công!';
-                successMessage.style.color = 'green';
-                fetchEvents(); // Refresh event list
+// Close the form popup if closeBtn exists
+if (closeBtn) {
+    closeBtn.onclick = function () {
+        if (eventFormPopup) {
+            eventFormPopup.classList.remove('show');
+            eventForm.reset();
+            console.log("Event Form Popup closed");  // Debugging log
+        } else {
+            console.error("Event Form Popup element not found");
+        }
+    };
+} else {
+    console.error("Close Button element not found");
+}
+
+// Handle form submission to save event if eventForm exists
+if (eventForm) {
+    eventForm.onsubmit = async function (e) {
+        e.preventDefault();
+        const formData = new FormData(eventForm);
+        const eventData = Object.fromEntries(formData.entries());
+
+        // Convert selected options to arrays
+        eventData.typeIds = Array.from(typeIdsSelect.selectedOptions).map(option => parseInt(option.value));
+        eventData.studyMethodIds = Array.from(studyMethodIdsSelect.selectedOptions).map(option => parseInt(option.value));
+
+        
+        // Convert selected options to arrays
+        eventData.typeIds = Array.from(typeIdsSelect.selectedOptions).map(option => parseInt(option.value));
+        eventData.studyMethodIds = Array.from(studyMethodIdsSelect.selectedOptions).map(option => parseInt(option.value));
+        eventData.daysOfWeek = Array.from(daysOfWeekSelect.selectedOptions).map(option => option.value);
+        
+        eventData.startDateTime = new Date(eventData.startDateTime).toISOString();
+        eventData.endDateTime = new Date(eventData.endDateTime).toISOString();
+    
+
+        console.log('Submitting event data:', eventData); 
+
+        // Call createEvent function
+        await createEvent(eventData);
+        fetchEvents();
+        if (eventFormPopup) {
+            eventFormPopup.classList.remove('show');
+        }
+        eventForm.reset();
+    };
+} else {
+    console.error("Event Form element not found");
+}
+
+// Fetch Events
+async function fetchEvents() {
+    try {
+        const response = await fetch(apiBaseUrl);
+        const events = await response.json();
+
+        if (Array.isArray(events)) {
+            renderEvents(events);
+        } else {
+            throw new TypeError('Expected an array of events, but received:', events);
+        }
+    } catch (error) {
+        console.error('Error fetching events:', error);
+    }
+}
+
+// Function to render events
+function renderEvents(events) {
+    if (!Array.isArray(events)) {
+        console.error('renderEvents: expected an array but received:', events);
+        return;
+    }
+
+    eventList.innerHTML = '';
+    events.forEach(event => {
+        const row = document.createElement('tr');
+        const types = event.typeIds.map(typeId => typeOptions[typeId]).join(', ');
+        const studyMethods = event.studyMethodIds.map(methodId => studyMethodOptions[methodId]).join(', ');
+
+        row.innerHTML = `
+            <td>${event.title}</td>
+            <td>${formatDateTime(event.startDateTime)}</td>
+            <td>${formatDateTime(event.endDateTime)}</td>
+            <td>${types}</td>
+            <td>${studyMethods}</td>
+            <td>${event.location}</td>
+            <td>
+                <button class="view-btn" data-id="${event.id}">👁️</button>
+                <button class="edit-btn" data-id="${event.id}">✏️</button>
+                <button class="delete-btn" data-id="${event.id}">🗑️</button>
+            </td>
+        `;
+        eventList.appendChild(row);
+    });
+
+    // Add event listeners for buttons
+    document.querySelectorAll('.view-btn').forEach(btn => {
+        btn.addEventListener('click', viewEvent);
+    });
+
+    document.querySelectorAll('.edit-btn').forEach(btn => {
+        btn.addEventListener('click', editEvent);
+    });
+
+    document.querySelectorAll('.delete-btn').forEach(btn => {
+        btn.addEventListener('click', deleteEvent);
+    });
+}
+
+// create new event
+
+async function createEvent(eventData) {
+    try {
+
+    const eventData = {
+        title: document.getElementById('title').value,
+        description: document.getElementById('description').value,
+        location: document.getElementById('location').value,
+        startDateTime: document.getElementById('startDateTime').value,
+        endDateTime: document.getElementById('endDateTime').value,
+        color: document.getElementById('color').value || "#000000", // Default color if not specified
+        typeIds: Array.from(typeIdsSelect.selectedOptions).map(option => parseInt(option.value)),
+        studyMethodIds: Array.from(studyMethodIdsSelect.selectedOptions).map(option => parseInt(option.value)),
+        recurrence: {
+            frequency: recurrenceFrequency.value,
+            interval: parseInt(recurrenceInterval.value),
+            daysOfWeek: Array.from(daysOfWeekSelect.selectedOptions).map(option => option.value),
+            endRecurrence: endRecurrenceInput.value
+        },
+        reminders: [
+            {
+                method: parseInt(remindersMethodSelect.value),
+                minutesBefore: parseInt(remindersMinutesBefore.value)
             }
+        ],
+        notes: document.getElementById('eventNotes').value
+    };
+    
+    // Validate required fields
+    if (!eventData.title) {
+        throw new Error("Title is required");
+    }
+    if (!eventData.startDateTime || !eventData.endDateTime) {
+        throw new Error("Start and End Date/Time are required");
+    
+    }
+
+
+        if (!/^#[0-9A-Fa-f]{6}$/.test(eventData.color)) {
+            throw new Error('Color must be in the format "#rrggbb"');
         }
 
-        modal.style.display = 'none'; // Close modal after saving
-        document.body.classList.remove('modal-open'); // Remove dark background
-    });
+        eventData.typeIds = eventData.typeIds || [];
+        eventData.studyMethodIds = eventData.studyMethodIds || [];
 
-    // Open form for adding new event
-    addEventBtn.addEventListener('click', function () {
-        openModal('add', null); // Change 'edit' to 'add' for adding new event
-        successMessage.innerHTML = '';
-        form.reset(); // Reset the form fields for adding a new event
-    });
+        const response = await fetch(`${apiBaseUrl}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify(eventData)
+        });
 
+        if (!response.ok) {
+            throw new Error(`Failed to create event: ${response.statusText}`);
+        }
 
-    // Fetch initial event list on page load
-    fetchEvents();
-});
+        console.log('Event created successfully');
+    } catch (error) {
+        console.error('Error creating event:', error);
+    }
+}})

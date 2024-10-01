@@ -13,7 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/schedules")
+@RequestMapping("/api/schedules")
 public class ScheduleController {
 
     @Autowired
