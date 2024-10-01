@@ -1,6 +1,6 @@
 {
   "dependencies": {
-    "electron": "^32.0.2"
+    "electron": "^32.1.2"
   },
   "scripts": {
     "start": "electron ./main.js"
