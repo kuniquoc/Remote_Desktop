@@ -1,117 +1,98 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PBL4 - Lịch trình</title>
     <link rel="stylesheet" href="../css/event_calendar.css">
     <link rel="stylesheet" href="../css/header_lin.css">
+    <title>Event Calendar</title>
 </head>
 <body>
     <div class="container">
-        <header>
-            <h2 class="logo">PBL4</h2>
-            <nav class="navigation">
-                <a href="home.html">Home</a>
-                <a href="event_calendar.html">Lịch trình</a>
-                <a href="#">P.P. Học</a>
-                <a href="user_profile.html">Tài khoản</a>
-                <button class="btnLogout-popup" onclick="logout()">Đăng xuất</button>
-            </nav>
-        </header>
-        
-        <!-- Filter Dropdown -->
-    <div id="filter-container">
-        <label for="eventTypeFilter">Lọc theo loại:</label>
-        <select id="eventTypeFilter">
-            <option value="all">Tất cả</option>
-            <option value="class">Buổi học</option>
-            <option value="exam">Kiểm tra</option>
-            <option value="assignment">Bài tập</option>
-            <option value="activity">Hoạt động khác</option>
-        </select>
-    </div>
+        <h1>Lịch trình của bạn</h1>
+        <button id="addEventBtn" class="btn">Thêm lịch mới</button>
 
-        <div id="event-list-container">
-            <h2>Lịch của bạn</h2>
-            <table id="event-table">
-                <thead>
-                    <tr>
-                        <th>Tiêu đề</th>
-                        <th>Thời gian bắt đầu</th>
-                        <th>Thời gian kết thúc</th>
-                        <th>Loại</th>
-                        <th>Địa điểm</th>
-                        <th>Hành động</th>
-                    </tr>
-                </thead>
-                <tbody id="event-list"></tbody>
-            </table>
-
-            <!-- New Event Button -->
-            <button id="add-event-btn" class="add-event-btn">Thêm lịch mới</button>
-        </div>
-
-        <!-- Overlay for Viewing/Editing/Adding Event -->
-        <div id="event-modal" class="modal">
-            <div class="modal-content">
+        <div id="eventFormPopup" class="popup">
+            <div class="popup-content">
                 <span class="close">&times;</span>
-                <h2 id="modal-title">Chi tiết về lịch</h2>
-                <form id="event-form">
-                    <label for="title">Tiêu đề:</label>
-                    <input type="text" id="title" required>
+                <form id="eventForm" class="form-container">
+                    <h2>Thêm lịch mới</h2>
 
-                    <label for="description">Mô tả:</label>
-                    <textarea id="description"></textarea>
+                    <label for="title">Tiêu đề</label>
+                    <input type="text" id="title" name="title" required>
 
-                    <label for="location">Địa điểm:</label>
-                    <input type="text" id="location">
+                    <label for="description">Mô tả</label>
+                    <input type="text" id="description" name="description">
 
-                    <label for="courseCode">Mã môn học:</label>
-                    <input type="text" id="courseCode" required>
+                    <label for="location">Địa điểm</label>
+                    <input type="text" id="location" name="location">
 
-                    <label for="startDateTime">Thời điểm bắt đầu:</label>
-                    <input type="datetime-local" id="startDateTime" required>
+                    <label for="startDateTime">Thời điểm bắt đầu</label>
+                    <input type="datetime-local" id="startDateTime" name="startDateTime" required>
 
-                    <label for="endDateTime">Thời điểm kết thúc:</label>
-                    <input type="datetime-local" id="endDateTime" required>
+                    <label for="endDateTime">Thời điểm kết thúc</label>
+                    <input type="datetime-local" id="endDateTime" name="endDateTime" required>
 
-                    <label for="eventType">Loại:</label>
-                    <select id="eventType" required>
-                        <option value="class">Buổi học</option>
-                        <option value="exam">Kiểm tra</option>
-                        <option value="assignment">Bài tập</option>
-                        <option value="activity">Hoạt động</option>
+                    <label for="typeIds">Thể loại</label>
+                    <select id="typeIds" name="typeIds" multiple></select>
+
+                    <label for="studyMethodIds">Phương pháp học</label>
+                    <select id="studyMethodIds" name="studyMethodIds" multiple></select>
+
+                    <label for="recurrenceFrequency">Lặp lại theo</label>
+                    <select id="recurrenceFrequency" name="recurrenceFrequency">
+                        <option value="">Không</option>
+                        <option value="WEEKLY">Tuần</option>
+                        <option value="MONTHLY">Tháng</option>
                     </select>
 
-                    <fieldset>
-                        <legend>Lặp lại</legend>
-                        <label for="interval">Mỗi:</label>
-                        <input type="number" id="interval" value="1">
-                        <select id="frequency">
-                            <option value="none">Không lặp</option>
-                            <option value="daily">Ngày</option>
-                            <option value="weekly">Tuần</option>
-                            <option value="monthly">Tháng</option>
-                        </select>
+                    <label for="recurrenceInterval">Lặp lại mấy lần</label>
+                    <input type="number" id="recurrenceInterval" name="recurrenceInterval" min="1">
 
-                        <label for="daysOfWeek">Ngày trong tuần:</label>
-                        <input type="text" id="daysOfWeek" placeholder="VD: Thứ ba">
+                    <div class="days-of-week-row"><label for="daysOfWeek">Ngày trong tuần</label>
+                    <select id="daysOfWeek" name="daysOfWeek" multiple></select></div>
 
-                        <label for="endRecurrence">Kết thúc lặp lại vào:</label>
-                        <input type="datetime-local" id="endRecurrence">
-                    </fieldset>
+                    <label for="endRecurrence">Ngày kết thúc lặp</label>
+                    <input type="date" id="endRecurrence" name="endRecurrence">
 
-                    <label for="reminder">Nhắc nhở trước (phút):</label>
-                    <input type="number" id="reminder" value="60">
+                    <label for="remindersMethod">Nhắc nhở bằng</label>
+                    <select id="remindersMethod" name="remindersMethodSelect">
+                        <option value="">None</option>
+                        <option value="1">Email</option>
+                        <option value="2">Điện thoại</option>
+                    </select>
 
-                    <div id="success-message" class="success-message"></div>
-                    <button type="submit" id="save-btn" class="save-btn hidden">Lưu</button>
+                    <label for="remindersMinutesBefore">Nhắc nhở trước (phút)</label>
+                    <input type="number" id="remindersMinutesBefore" name="remindersMinutesBefore" min="1">
+
+                    <label for="color">Màu</label>
+                    <input type="color" id="color" name="color">
+
+                    <label for="eventNotes">Ghi chú</label>
+                    <textarea id="eventNotes" name="notes" rows="4" cols="50"></textarea><br>
+
+                    <button type="submit" class="btn save-btn">Lưu lịch</button>
                 </form>
             </div>
         </div>
 
-
+        <table id="eventList" class="event-list">
+            <thead>
+                <tr>
+                    <th>Tiêu đề</th>
+                    <th>Thời điểm bắt đầu</th>
+                    <th>Thời điểm kết thúc</th>
+                    <th>Thể loại</th>
+                    <th>Phương pháp học</th>
+                    <th>Địa điểm</th>
+                    <th>Hành động</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Event rows will be populated here by JavaScript -->
+            </tbody>
+        </table>
     </div>
 
     <script src="../js/event_calendar.js"></script>
