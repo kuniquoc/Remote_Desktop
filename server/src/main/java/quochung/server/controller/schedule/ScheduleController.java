@@ -97,6 +97,8 @@ public class ScheduleController {
         try {
             scheduleService.deleteSchedule(id);
             return ResponseEntity.noContent().build();
+        } catch (BadRequestException e) {
+            return ResponseEntity.status(400).body(new MessageDto(e.getMessage()));
         } catch (Exception e) {
             System.out.println("Error: " + e);
             return ResponseEntity.status(500).body(new MessageDto("Lỗi server"));

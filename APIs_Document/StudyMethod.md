@@ -8,7 +8,7 @@
     "name": "Pomodoro Technique",
     "description": "Phương pháp quản lý thời gian với các phiên làm việc 25 phút.",
     "thumbnail": "https://example.com/thumbnails/pomodoro.png",
-    "type": "SoftSkills",
+    "typeId": 9,
     "detail": "<h1>Pomodoro Technique</h1><p>Phương pháp này giúp cải thiện hiệu suất qua các phiên làm việc 25 phút.</p>"
 }
 ```

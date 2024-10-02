@@ -169,7 +169,10 @@ public class ScheduleService {
         scheduleRepository.save(existingSchedule);
     }
 
-    public void deleteSchedule(Long id) {
-        scheduleRepository.deleteById(id);
+    public void deleteSchedule(Long id) throws BadRequestException {
+        Schedule schedule = scheduleRepository.findById(id)
+                .orElseThrow(() -> new BadRequestException("Không tìm thấy lịch học"));
+        reminderRepository.deleteAll(schedule.getReminders());
+        scheduleRepository.delete(schedule);
     }
 }

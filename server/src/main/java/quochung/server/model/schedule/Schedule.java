@@ -44,7 +44,7 @@ public class Schedule {
     @Embedded
     private Recurrence recurrence;
 
-    @OneToMany(mappedBy = "schedule", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "schedule", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Reminder> reminders = new HashSet<>();
 
     private String notes;

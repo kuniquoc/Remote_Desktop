@@ -235,7 +235,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 },
                 reminders: [
                     {
-                        method: parseInt(remindersMethodSelect.value),
+                        method: remindersMethodSelect.value,
                         minutesBefore: parseInt(remindersMinutesBefore.value)
                     }
                 ],
@@ -258,6 +258,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
             eventData.typeIds = eventData.typeIds || [];
             eventData.studyMethodIds = eventData.studyMethodIds || [];
+
+            eventData.recurrence = eventData.recurrence || null;
+
+            eventData.reminders = eventData.reminders || [];
+
 
             const response = await fetch(`${apiBaseUrl}`, {
                 method: 'POST',

@@ -3,6 +3,7 @@ package quochung.server.model.schedule;
 import java.util.HashSet;
 import java.util.Set;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -30,6 +31,6 @@ public class SubjectType {
     @Enumerated(EnumType.STRING)
     private SubjectTypeName name;
 
-    @OneToMany(mappedBy = "type")
+    @OneToMany(mappedBy = "type", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<StudyMethod> study_methods = new HashSet<>();
 }

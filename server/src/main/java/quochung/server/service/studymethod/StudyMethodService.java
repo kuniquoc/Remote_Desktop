@@ -4,6 +4,7 @@ import org.springframework.stereotype.Service;
 
 import quochung.server.model.studymethod.StudyMethod;
 import quochung.server.payload.studymethod.*;
+import quochung.server.repository.schedule.SubjectTypeRepository;
 import quochung.server.repository.studymethod.StudyMethodRepository;
 
 import java.util.List;
@@ -17,12 +18,16 @@ public class StudyMethodService {
     @Autowired
     private StudyMethodRepository studyMethodRepository;
 
-    public StudyMethod createStudyMethod(StudyMethodDetailDto createStudyMethodRequest) {
+    @Autowired
+    private SubjectTypeRepository subjectTypeRepository;
+
+    public StudyMethod createStudyMethod(CreateStudyMethodDto createStudyMethodRequest) throws BadRequestException {
         StudyMethod studyMethod = new StudyMethod();
         studyMethod.setName(createStudyMethodRequest.getName());
         studyMethod.setDescription(createStudyMethodRequest.getDescription());
         studyMethod.setThumbnail(createStudyMethodRequest.getThumbnail());
-        studyMethod.setType(createStudyMethodRequest.getType());
+        studyMethod.setType(subjectTypeRepository.findById(createStudyMethodRequest.getTypeId())
+                .orElseThrow(() -> new BadRequestException("Không tìm thấy loại môn học")));
         studyMethod.setDetail(createStudyMethodRequest.getDetail());
         return studyMethodRepository.save(studyMethod);
     }
@@ -80,7 +85,9 @@ public class StudyMethodService {
         return studyMethodRepository.save(studyMethod);
     }
 
-    public void deleteStudyMethod(Long id) {
-        studyMethodRepository.deleteById(id);
+    public void deleteStudyMethod(Long id) throws BadRequestException {
+        StudyMethod studyMethod = studyMethodRepository.findById(id)
+                .orElseThrow(() -> new BadRequestException("Không tìm thấy phương pháp học"));
+        studyMethodRepository.delete(studyMethod);
     }
 }

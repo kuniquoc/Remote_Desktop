@@ -1,6 +1,6 @@
-
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="../css/header_lin.css">
     <title>Event Calendar</title>
 </head>
+
 <body>
     <div class="container">
         <h1>Lịch trình của bạn</h1>
@@ -51,7 +52,8 @@
                     <input type="number" id="recurrenceInterval" name="recurrenceInterval" min="1">
 
                     <div class="days-of-week-row"><label for="daysOfWeek">Ngày trong tuần</label>
-                    <select id="daysOfWeek" name="daysOfWeek" multiple></select></div>
+                        <select id="daysOfWeek" name="daysOfWeek" multiple></select>
+                    </div>
 
                     <label for="endRecurrence">Ngày kết thúc lặp</label>
                     <input type="date" id="endRecurrence" name="endRecurrence">
@@ -59,8 +61,8 @@
                     <label for="remindersMethod">Nhắc nhở bằng</label>
                     <select id="remindersMethod" name="remindersMethodSelect">
                         <option value="">None</option>
-                        <option value="1">Email</option>
-                        <option value="2">Điện thoại</option>
+                        <option value="EMAIL">Email</option>
+                        <!-- <option value="">Điện thoại</option> -->
                     </select>
 
                     <label for="remindersMinutesBefore">Nhắc nhở trước (phút)</label>
@@ -97,4 +99,5 @@
 
     <script src="../js/event_calendar.js"></script>
 </body>
+
 </html>

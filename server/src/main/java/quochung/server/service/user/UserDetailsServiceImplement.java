@@ -69,7 +69,8 @@ public class UserDetailsServiceImplement implements UserDetailsService {
     }
 
     public void deleteUser() {
-        userRepository.deleteById(getCurrentUserId());
+        User user = getCurrentUser();
+        userRepository.delete(user);
     }
 
     public List<UserListElementDto> getAllUsers() {
@@ -95,7 +96,9 @@ public class UserDetailsServiceImplement implements UserDetailsService {
     }
 
     public void deleteUser(Long userId) {
-        userRepository.deleteById(userId);
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new UsernameNotFoundException("Không tìm thấy người dùng với id: " + userId));
+        userRepository.delete(user);
     }
 
     public void updateRole(Long userId, Set<Role> roles) {

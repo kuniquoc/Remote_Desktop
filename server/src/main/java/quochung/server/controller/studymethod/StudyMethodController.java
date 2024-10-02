@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import quochung.server.payload.MessageDto;
+import quochung.server.payload.studymethod.CreateStudyMethodDto;
 import quochung.server.payload.studymethod.StudyMethodDetailDto;
 import quochung.server.service.studymethod.StudyMethodService;
 import quochung.server.util.HtmlSanitizer;
@@ -27,13 +28,15 @@ public class StudyMethodController {
 
     @PostMapping
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ResponseEntity<?> createStudyMethod(@RequestBody StudyMethodDetailDto studyMethodDetailDto) {
+    public ResponseEntity<?> createStudyMethod(@RequestBody CreateStudyMethodDto createStudyMethodDto) {
         try {
-            studyMethodDetailDto.setDetail(HtmlSanitizer.escapeHtml(studyMethodDetailDto.getDetail()));
+            createStudyMethodDto.setDetail(HtmlSanitizer.escapeHtml(createStudyMethodDto.getDetail()));
 
             String message = "Phương pháp học được tạo thành công";
-            Object data = studyMethodService.createStudyMethod(studyMethodDetailDto);
+            Object data = studyMethodService.createStudyMethod(createStudyMethodDto);
             return ResponseEntity.status(201).body(new MessageDto(message, data));
+        } catch (BadRequestException e) {
+            return ResponseEntity.status(400).body(new MessageDto(e.getMessage()));
         } catch (Exception e) {
             System.out.println("Error: " + e);
             return ResponseEntity.status(500).body(new MessageDto("Lỗi server"));
@@ -93,6 +96,8 @@ public class StudyMethodController {
         try {
             studyMethodService.deleteStudyMethod(id);
             return ResponseEntity.noContent().build();
+        } catch (BadRequestException e) {
+            return ResponseEntity.status(400).body(new MessageDto(e.getMessage()));
         } catch (Exception e) {
             System.out.println("Error: " + e);
             return ResponseEntity.status(500).body(new MessageDto("Lỗi server"));
